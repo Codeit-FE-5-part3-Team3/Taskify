@@ -1,4 +1,5 @@
 import DashboardToolBar from "@/components/dashboard-tool-bar/DashboardToolBar";
+import MemberBar from "@/components/member-bar/MemberBar";
 import SideBar from "@/components/side-bar/SideBar";
 import PageHeader from "@/components/ui/page-header/PageHeader";
 import UserAvatar from "@/components/user-avatar/UserAvatar";
@@ -38,7 +39,10 @@ export default async function DashboardPageLayout({ params, children }: Props) {
                 />
               )}
             </PageHeader.Title>
-            <DashboardToolBar />
+            <div className="flex gap-10 items-center">
+              <DashboardToolBar />
+              <MemberBar dashboardId={params.dashboardId} />
+            </div>
           </div>
           <UserAvatar />
         </PageHeader>
