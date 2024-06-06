@@ -1,5 +1,10 @@
 import { serverSideFetcher } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 type member = {
   id: number;
@@ -41,7 +46,7 @@ const getBackgroundClass = (userId: number) => {
     "bg-[#c3102b]",
     "bg-[#7AC555]",
   ];
-  return classes[userId % 8];
+  return classes[userId % 10];
 };
 
 export default async function MemberBar({
@@ -91,7 +96,86 @@ export default async function MemberBar({
       updatedAt: "2024-06-06T08:03:33.357Z",
       isOwner: true,
     },
-    ...members,
+    {
+      id: 3,
+      userId: 4,
+      email: "string",
+      nickname: "그",
+      profileImageUrl: "string",
+      createdAt: "2024-06-06T08:03:33.357Z",
+      updatedAt: "2024-06-06T08:03:33.357Z",
+      isOwner: true,
+    },
+    {
+      id: 3,
+      userId: 5,
+      email: "string",
+      nickname: "만",
+      profileImageUrl: "string",
+      createdAt: "2024-06-06T08:03:33.357Z",
+      updatedAt: "2024-06-06T08:03:33.357Z",
+      isOwner: true,
+    },
+    {
+      id: 3,
+      userId: 7,
+      email: "string",
+      nickname: "할",
+      profileImageUrl: "string",
+      createdAt: "2024-06-06T08:03:33.357Z",
+      updatedAt: "2024-06-06T08:03:33.357Z",
+      isOwner: true,
+    },
+    {
+      id: 3,
+      userId: 8,
+      email: "string",
+      nickname: "까",
+      profileImageUrl: "string",
+      createdAt: "2024-06-06T08:03:33.357Z",
+      updatedAt: "2024-06-06T08:03:33.357Z",
+      isOwner: true,
+    },
+    {
+      id: 3,
+      userId: 10,
+      email: "string",
+      nickname: "까",
+      profileImageUrl: "string",
+      createdAt: "2024-06-06T08:03:33.357Z",
+      updatedAt: "2024-06-06T08:03:33.357Z",
+      isOwner: true,
+    },
+    {
+      id: 3,
+      userId: 6,
+      email: "string",
+      nickname: "까",
+      profileImageUrl: "string",
+      createdAt: "2024-06-06T08:03:33.357Z",
+      updatedAt: "2024-06-06T08:03:33.357Z",
+      isOwner: true,
+    },
+    {
+      id: 3,
+      userId: 4123,
+      email: "string",
+      nickname: "까",
+      profileImageUrl: "string",
+      createdAt: "2024-06-06T08:03:33.357Z",
+      updatedAt: "2024-06-06T08:03:33.357Z",
+      isOwner: true,
+    },
+    {
+      id: 3,
+      userId: 9,
+      email: "string",
+      nickname: "까",
+      profileImageUrl: "string",
+      createdAt: "2024-06-06T08:03:33.357Z",
+      updatedAt: "2024-06-06T08:03:33.357Z",
+      isOwner: true,
+    },
   ];
   const firstFourMembers = members.slice(0, 4);
   const afterFourMembers = members.slice(4);
@@ -116,12 +200,38 @@ export default async function MemberBar({
         </li>
       ))}
       {afterFourMembers && (
-        <li
-          key={0}
-          className="bg-[#f4d7da] text-[#de5b68] flex justify-center items-center w-10 h-10 z-10 -ml-2 border-2 border-white rounded-full font-medium"
-        >
-          +{afterFourMembers.length}
-        </li>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <li
+              key={0}
+              className="bg-[#f4d7da] text-[#de5b68] flex justify-center items-center w-10 h-10 z-40 -ml-2 border-2 border-white rounded-full font-medium"
+            >
+              +{afterFourMembers.length}
+            </li>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="px-4 py-4">
+            <ul className="flex flex-wrap w-40">
+              {afterFourMembers.map((member: member) => (
+                <li key={member.userId}>
+                  <Avatar className="-mr-2">
+                    <AvatarImage
+                      src={member.profileImageUrl}
+                      width={38}
+                      height={38}
+                    />
+                    <AvatarFallback
+                      className={`text-white font-semibold ${getBackgroundClass(
+                        member.userId,
+                      )}`}
+                    >
+                      {getFirstCharacter(member.nickname)}
+                    </AvatarFallback>
+                  </Avatar>
+                </li>
+              ))}
+            </ul>
+          </DropdownMenuContent>
+        </DropdownMenu>
       )}
     </ul>
   );
