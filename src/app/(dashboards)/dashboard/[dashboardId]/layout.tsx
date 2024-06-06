@@ -1,3 +1,4 @@
+import DashboardToolBar from "@/components/dashboard-tool-bar/DashboardToolBar";
 import SideBar from "@/components/side-bar/SideBar";
 import PageHeader from "@/components/ui/page-header/PageHeader";
 import UserAvatar from "@/components/user-avatar/UserAvatar";
@@ -25,17 +26,20 @@ export default async function DashboardPageLayout({ params, children }: Props) {
       <SideBar selectedId={params?.dashboardId} />
       <div className="flex flex-col grow">
         <PageHeader>
-          <PageHeader.Title>
-            {dashboard.title}
-            {dashboard.createdByMe && (
-              <Image
-                src={"/crown_icon.png"}
-                width={20}
-                height={16}
-                alt="created by me"
-              />
-            )}
-          </PageHeader.Title>
+          <div className="flex grow justify-between pr-8">
+            <PageHeader.Title>
+              {dashboard.title}
+              {dashboard.createdByMe && (
+                <Image
+                  src={"/crown_icon.png"}
+                  width={20}
+                  height={16}
+                  alt="created by me"
+                />
+              )}
+            </PageHeader.Title>
+            <DashboardToolBar />
+          </div>
           <UserAvatar />
         </PageHeader>
         {children}
