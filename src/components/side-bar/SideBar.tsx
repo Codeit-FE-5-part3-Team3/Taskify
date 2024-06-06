@@ -37,17 +37,14 @@ export default async function SideBar({ selectedId }: Props) {
       <button className="px-[12px] py-[16px]">Dummy button</button>
       <ul className="flex flex-col gap-5">
         {dashboards.map((dashboard: dashboard) => (
-          <li
-            key={dashboard.id}
-            className={
-              selectedId == dashboard.id
-                ? "bg-[#F1EFFD] rounded px-3 py-3"
-                : "px-3 py-3"
-            }
-          >
+          <li key={dashboard.id}>
             <Link
               href={`/dashboard/${dashboard.id}`}
-              className="flex flex-row items-center"
+              className={
+                selectedId == dashboard.id
+                  ? "bg-[#F1EFFD] rounded px-3 py-3 flex flex-row items-center"
+                  : "px-3 py-3 hover:bg-[#f1effd] flex flex-row items-center"
+              }
             >
               <div
                 style={{ backgroundColor: dashboard.color }}
