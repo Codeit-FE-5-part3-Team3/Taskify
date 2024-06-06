@@ -28,6 +28,22 @@ function getFirstCharacter(str: string) {
   }
 }
 
+const getBackgroundClass = (userId: number) => {
+  const classes = [
+    "bg-[#ffc85a]",
+    "bg-[#fdd446]",
+    "bg-[#9dd7ed]",
+    "bg-[#c4b1a2]",
+    "bg-[#a3c4a2]",
+    "bg-[#034694]",
+    "bg-[#e876ea]",
+    "bg-[#000]",
+    "bg-[#c3102b]",
+    "bg-[#7AC555]",
+  ];
+  return classes[userId % 8];
+};
+
 export default async function MemberBar({
   dashboardId,
 }: {
@@ -35,21 +51,53 @@ export default async function MemberBar({
 }) {
   let members = await getMembers(dashboardId);
   members = [
-    ...members,
-    ...members,
-    ...members,
-    ...members,
-    ...members,
-    ...members,
-    ...members,
-    ...members,
+    {
+      id: 0,
+      userId: 0,
+      email: "string",
+      nickname: "힘",
+      profileImageUrl: "string",
+      createdAt: "2024-06-06T08:03:33.357Z",
+      updatedAt: "2024-06-06T08:03:33.357Z",
+      isOwner: true,
+    },
+    {
+      id: 1,
+      userId: 1,
+      email: "string",
+      nickname: "들",
+      profileImageUrl: "string",
+      createdAt: "2024-06-06T08:03:33.357Z",
+      updatedAt: "2024-06-06T08:03:33.357Z",
+      isOwner: true,
+    },
+    {
+      id: 2,
+      userId: 2,
+      email: "string",
+      nickname: "구",
+      profileImageUrl: "string",
+      createdAt: "2024-06-06T08:03:33.357Z",
+      updatedAt: "2024-06-06T08:03:33.357Z",
+      isOwner: true,
+    },
+    {
+      id: 3,
+      userId: 3,
+      email: "string",
+      nickname: "나",
+      profileImageUrl: "string",
+      createdAt: "2024-06-06T08:03:33.357Z",
+      updatedAt: "2024-06-06T08:03:33.357Z",
+      isOwner: true,
+    },
     ...members,
   ];
   const firstFourMembers = members.slice(0, 4);
   const afterFourMembers = members.slice(4);
 
-  const firstTwoMembers = members.slice(0, 2);
-  const afterTwoMembers = members.slice(2);
+  //   const firstTwoMembers = members.slice(0, 2);
+  //   const afterTwoMembers = members.slice(2);
 
   return (
     <ul className="flex">
@@ -57,7 +105,11 @@ export default async function MemberBar({
         <li key={member.userId}>
           <Avatar className="-ml-2">
             <AvatarImage src={member.profileImageUrl} width={38} height={38} />
-            <AvatarFallback className="bg-blue-400 text-white font-semibold">
+            <AvatarFallback
+              className={`text-white font-semibold ${getBackgroundClass(
+                member.userId,
+              )}`}
+            >
               {getFirstCharacter(member.nickname)}
             </AvatarFallback>
           </Avatar>
