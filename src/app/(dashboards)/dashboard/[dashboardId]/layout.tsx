@@ -1,15 +1,45 @@
 import SideBar from "@/components/side-bar/SideBar";
+import PageHeader from "@/components/ui/page-header/PageHeader";
+import UserAvatar from "@/components/user-avatar/UserAvatar";
+import { serverSideFetcher } from "@/lib/utils";
+import Image from "next/image";
 
 interface Props {
   params: { dashboardId: number };
   children: React.ReactNode;
 }
 
-export default function DashboardPageLayout({ params, children }: Props) {
+async function getDashboardTitle(dashboardId: number) {
+  const response = await serverSideFetcher(
+    `https:///sp-taskify-api.vercel.app/5-3/dashboards/${dashboardId}`,
+  );
+  const data = await response?.json();
+  return data;
+}
+
+export default async function DashboardPageLayout({ params, children }: Props) {
+  const dashboard = await getDashboardTitle(params.dashboardId);
+
   return (
     <div className="flex flex-row">
       <SideBar selectedId={params?.dashboardId} />
-      {children}
+      <div className="flex flex-col grow">
+        <PageHeader>
+          <PageHeader.Title>
+            {dashboard.title}
+            {dashboard.createdByMe && (
+              <Image
+                src={"/crown_icon.png"}
+                width={20}
+                height={16}
+                alt="created by me"
+              />
+            )}
+          </PageHeader.Title>
+          <UserAvatar />
+        </PageHeader>
+        {children}
+      </div>
     </div>
   );
 }

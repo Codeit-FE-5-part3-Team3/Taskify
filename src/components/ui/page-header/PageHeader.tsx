@@ -9,7 +9,11 @@ export default function PageHeader({ children }: { children: ReactNode }) {
 }
 
 function HeaderTitle({ children }: { children: ReactNode }) {
-  return <span className="text-xl font-bold">{children}</span>;
+  return (
+    <span className="text-xl font-bold flex flex-row items-center gap-2">
+      {children}
+    </span>
+  );
 }
 
 PageHeader.Title = HeaderTitle;
