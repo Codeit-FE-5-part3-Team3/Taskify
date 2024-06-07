@@ -54,7 +54,7 @@ export default async function SideBar({ selectedId }: Props) {
           <CreateDashboardModal />
         </AlertDialogContent>
       </AlertDialog>
-      <ul className="flex flex-col gap-5">
+      <ul className="flex flex-col gap-5 overflow-y-scroll">
         {dashboards.map((dashboard: dashboard) => (
           <li key={dashboard.id}>
             <Link
