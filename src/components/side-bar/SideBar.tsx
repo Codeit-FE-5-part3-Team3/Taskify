@@ -1,7 +1,11 @@
 import { serverSideFetcher } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 import CreateDashboardModal from "../modals/create-dashboard-modal/CreateDashboardModal";
 
 interface Props {
@@ -34,8 +38,8 @@ export default async function SideBar({ selectedId }: Props) {
       <Link href="/mydashboard" className="py-[20px] px-[12px]">
         <Image src="/taskify.png" width={110} height={33} alt="Taskify" />
       </Link>
-      <Dialog>
-        <DialogTrigger asChild>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
           <button className="px-3 py-4 text-xs font-bold text-[#787486] flex justify-between items-center hover:bg-[#d9d9d9] rounded">
             <span>Dashboards</span>
             <Image
@@ -45,11 +49,11 @@ export default async function SideBar({ selectedId }: Props) {
               height={20}
             />
           </button>
-        </DialogTrigger>
-        <DialogContent>
+        </AlertDialogTrigger>
+        <AlertDialogContent className="p-7">
           <CreateDashboardModal />
-        </DialogContent>
-      </Dialog>
+        </AlertDialogContent>
+      </AlertDialog>
       <ul className="flex flex-col gap-5">
         {dashboards.map((dashboard: dashboard) => (
           <li key={dashboard.id}>
