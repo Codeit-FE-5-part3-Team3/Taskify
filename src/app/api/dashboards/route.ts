@@ -24,9 +24,10 @@ export async function POST(req: any) {
       body: JSON.stringify(body),
     },
   );
+
   const data = await backendResponse.json();
 
-  return new Response(JSON.stringify(backendResponse), {
+  return new Response(JSON.stringify(data), {
     status: backendResponse.status,
   });
 }

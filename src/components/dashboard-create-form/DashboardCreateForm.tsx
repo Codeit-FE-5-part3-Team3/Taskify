@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
 
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -12,7 +13,6 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "../ui/alert-dialog";
-import revalidate from "@/util/revalidate";
 
 const FormSchema = z.object({
   color: z.enum(["#7AC555", "#760DDE", "#FFA500", "#76A5EA", "#E876EA"]),
@@ -24,14 +24,19 @@ export function DashboardCreateForm() {
     resolver: zodResolver(FormSchema),
   });
 
+  const router = useRouter();
+
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     const response = await fetch("/api/dashboards", {
       method: "POST",
       body: JSON.stringify({ title: data.dashboardName, color: data.color }),
     });
 
+    const d = await response.json();
+
     if (response.ok) {
-      await revalidate();
+      console.log(d);
+      router.push(`/dashboard/${d.id}`);
     }
   }
 
