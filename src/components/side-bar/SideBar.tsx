@@ -1,8 +1,8 @@
-import { authOptions } from "@/lib/auth";
 import { serverSideFetcher } from "@/lib/utils";
-import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import CreateDashboardModal from "../modals/create-dashboard-modal/CreateDashboardModal";
 
 interface Props {
   selectedId?: number;
@@ -34,7 +34,22 @@ export default async function SideBar({ selectedId }: Props) {
       <Link href="/mydashboard" className="py-[20px] px-[12px]">
         <Image src="/taskify.png" width={110} height={33} alt="Taskify" />
       </Link>
-      <button className="px-[12px] py-[16px]">Dummy button</button>
+      <Dialog>
+        <DialogTrigger asChild>
+          <button className="px-3 py-4 text-xs font-bold text-[#787486] flex justify-between items-center hover:bg-[#d9d9d9] rounded">
+            <span>Dashboards</span>
+            <Image
+              src={"/add_box.svg"}
+              alt="add new dashboard"
+              width={20}
+              height={20}
+            />
+          </button>
+        </DialogTrigger>
+        <DialogContent>
+          <CreateDashboardModal />
+        </DialogContent>
+      </Dialog>
       <ul className="flex flex-col gap-5">
         {dashboards.map((dashboard: dashboard) => (
           <li key={dashboard.id}>
