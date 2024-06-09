@@ -19,38 +19,39 @@ const config = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+        gray: {
+          50: '#FFFFFF',
+          100: '#FAFAFA',
+          200: '#EEEEEE',
+          300: '#D9D9D9',
+          400: '#9FA6B2',
+          500: '#787486',
+          600: '#4B4B4B',
+          700: '#333236',
+          800: '#171717',
+          900: '#000000',
         },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+        violet: {
+          50: '#F1EFFD',
+          100: '#5534da',
         },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+        red: {
+          50: '#D6173A',
         },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+        green: {
+          50: '#7AC555',
         },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+        purple: {
+          50: '#760DDE',
         },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+        orange: {
+          50: '#FFA500',
         },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+        blue: {
+          50: '#76A5EA',
+        },
+        pink: {
+          50: '#E876EA',
         },
       },
       borderRadius: {
