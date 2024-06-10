@@ -7,6 +7,7 @@ import {
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import CreateDashboardModal from "../modals/create-dashboard-modal/CreateDashboardModal";
+import DashboardLabel from "../ui/dashboard-label/DashboardLabel";
 
 interface Props {
   selectedId?: number;
@@ -65,21 +66,7 @@ export default async function SideBar({ selectedId }: Props) {
                   : "px-3 py-3 hover:bg-[#f1effd] flex flex-row items-center"
               }
             >
-              <div
-                style={{ backgroundColor: dashboard.color }}
-                className={`w-[8px] h-[8px] rounded-full`}
-              ></div>
-              <span className="ml-[16px] mr-[6px] text-[18px] leading-[21px]  font-medium">
-                {dashboard.title}
-              </span>
-              {dashboard.createdByMe && (
-                <Image
-                  src="/crown_icon.png"
-                  alt="내가 생성한 대시보드"
-                  width={18}
-                  height={14}
-                />
-              )}
+              <DashboardLabel dashboard={dashboard} />
             </Link>
           </li>
         ))}
