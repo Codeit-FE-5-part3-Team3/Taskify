@@ -8,12 +8,12 @@ const MainHeader = () => {
         <div className='p-4'>
           <Image src={"/logo-white.svg"} alt='Logo' width={121} height={39} />
         </div>
-        <div className='flex gap-5 tb:gap-9'>
+        <div className='flex gap-9'>
           <Link href='/signin'>
-            <button>로그인</button>
+            <button className='text-gray-50'>로그인</button>
           </Link>
           <Link href='/signup'>
-            <button>회원가입</button>
+            <button className='text-gray-50'>회원가입</button>
           </Link>
         </div>
       </header>
