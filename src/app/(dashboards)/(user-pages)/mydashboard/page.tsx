@@ -1,13 +1,17 @@
 import DashboardCreateButton from "./components/DashboardCreateButton";
+import DashboardPagination from "./components/DashboardPagination";
 
-export default function MyDashboardPage() {
+interface MyDashboardPageProps {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export default function MyDashboardPage({
+  searchParams,
+}: MyDashboardPageProps) {
+  const currentPage = Number(searchParams?.page) || 1;
   return (
     <main className="p-10">
-      <ul className="grid grid-cols-3 gap-3">
-        <li>
-          <DashboardCreateButton />
-        </li>
-      </ul>
+      <DashboardPagination pageNumber={currentPage} />
     </main>
   );
 }
