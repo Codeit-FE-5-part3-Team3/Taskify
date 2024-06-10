@@ -1,12 +1,20 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 const MainHeader = () => {
   return (
     <>
-      <header>
-        <div
-          className={`p-4 pr-20 flex justify-between items-center`}
-        >
+      <header className='z-nav flex h-70 w-full items-center justify-between bg-gray-900 px-12'>
+        <div className='p-4'>
+          <Image src={"/logo-white.svg"} alt='Logo' width={121} height={39} />
+        </div>
+        <div className='flex gap-5 tb:gap-9'>
+          <Link href='/signin'>
+            <button>로그인</button>
+          </Link>
+          <Link href='/signup'>
+            <button>회원가입</button>
+          </Link>
         </div>
       </header>
     </>
