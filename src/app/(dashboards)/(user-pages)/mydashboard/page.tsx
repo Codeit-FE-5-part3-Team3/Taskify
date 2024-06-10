@@ -11,9 +11,11 @@ export default function MyDashboardPage({
 }: MyDashboardPageProps) {
   const currentPage = Number(searchParams?.page) || 1;
   return (
-    <main className="p-10 bg-gray-100 w-full flex flex-col gap-11 grow ">
-      <DashboardPagination pageNumber={currentPage} />
-      <InvitationBoard />
+    <main className="p-10 bg-gray-100 w-full  grow ">
+      <div className="flex flex-col w-[1022px] gap-11">
+        <DashboardPagination pageNumber={currentPage} />
+        <InvitationBoard />
+      </div>
     </main>
   );
 }

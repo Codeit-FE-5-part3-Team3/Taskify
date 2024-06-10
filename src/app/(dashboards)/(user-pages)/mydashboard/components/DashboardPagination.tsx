@@ -58,7 +58,7 @@ export default async function DashboardPagination({
             {pageNumber} / {maxPage}
           </span>
 
-          <div className="flex">
+          <div className="flex bg-white">
             <Link href={`/mydashboard/?page=${pageNumber - 1}`}>
               <button
                 disabled={isFirstPage}
