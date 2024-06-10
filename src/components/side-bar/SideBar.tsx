@@ -35,7 +35,7 @@ export default async function SideBar({ selectedId }: Props) {
   const dashboards = await getDashBoards();
   if (!dashboards) return;
   return (
-    <div className="flex flex-col w-[300px] h-[100vh] px-[12px] border border-[#d9d9d9]">
+    <div className="flex flex-col w-[300px] h-[100vh] px-[12px] border border-[#d9d9d9] shrink-0">
       <Link href="/mydashboard" className="py-[20px] px-[12px]">
         <Image src="/taskify.png" width={110} height={33} alt="Taskify" />
       </Link>
@@ -55,7 +55,7 @@ export default async function SideBar({ selectedId }: Props) {
           <CreateDashboardModal />
         </AlertDialogContent>
       </AlertDialog>
-      <ul className="flex flex-col gap-5 overflow-y-scroll">
+      <ul className="flex flex-col gap-5 overflow-y-auto">
         {dashboards.map((dashboard: dashboard) => (
           <li key={dashboard.id}>
             <Link

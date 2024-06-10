@@ -1,5 +1,6 @@
 import DashboardCreateButton from "./components/DashboardCreateButton";
 import DashboardPagination from "./components/DashboardPagination";
+import InvitationBoard from "./components/InvitationBoard";
 
 interface MyDashboardPageProps {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -12,6 +13,7 @@ export default function MyDashboardPage({
   return (
     <main className="p-10">
       <DashboardPagination pageNumber={currentPage} />
+      <InvitationBoard />
     </main>
   );
 }
