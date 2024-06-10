@@ -1,6 +1,6 @@
 import { getPageDashbaords } from "@/util/api/getPageDashboards";
 import DashboardCreateButton from "./DashboardCreateButton";
-import DashbaordLinkCard from "@/components/dashboard-link-card/DashbaordLinkCard";
+import DashbaordLinkCard from "@/app/(dashboards)/(user-pages)/mydashboard/components/DashbaordLinkCard";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";

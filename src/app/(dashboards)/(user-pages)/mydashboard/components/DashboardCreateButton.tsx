@@ -5,7 +5,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import CreateDashboardModal from "@/components/modals/create-dashboard-modal/CreateDashboardModal";
 import Image from "next/image";
-import DashbaordLinkCard from "@/components/dashboard-link-card/DashbaordLinkCard";
+import DashbaordLinkCard from "@/app/(dashboards)/(user-pages)/mydashboard/components/DashbaordLinkCard";
 
 export default function DashboardCreateButton() {
   return (
