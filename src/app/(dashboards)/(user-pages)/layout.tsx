@@ -6,7 +6,7 @@ export default function MyPageLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-row grow">
+    <div className="flex flex-row ">
       <SideBar />
       {children}
     </div>

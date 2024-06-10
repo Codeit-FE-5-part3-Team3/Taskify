@@ -7,7 +7,7 @@ export default function MyDashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col grow">
+    <div className="flex flex-col w-full h-screen">
       <PageHeader>
         <PageHeader.Title>내 대시보드</PageHeader.Title>
         <UserAvatar />
