@@ -14,7 +14,7 @@ const MainSection = () => {
       <div className='pt-6 whitespace-break-spaces text-center text-[18px] text-gray-50'>서비스의 메인 설명 들어가는 부분인데 뭐라고 쓰지</div>
       <div className='flex justify-center'>
         <button className='w-[280px] h-[50px] text-center bg-violet-100 text-white text-[18px] rounded-lg hover:bg-blue-50 mt-[66px]'>
-          <Link href='/signin'>{'로그인하기'}</Link>
+          <Link href='/login'>로그인하기</Link>
         </button>
       </div>
     </section>

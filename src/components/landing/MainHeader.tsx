@@ -9,7 +9,7 @@ const MainHeader = () => {
           <Image src={"/logo-white.svg"} alt='Logo' width={121} height={39} />
         </div>
         <div className='flex gap-9'>
-          <Link href='/signin'>
+          <Link href='/login'>
             <button className='text-gray-50'>로그인</button>
           </Link>
           <Link href='/signup'>
