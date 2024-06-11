@@ -25,7 +25,7 @@ export default async function DashboardPageLayout({ params, children }: Props) {
   return (
     <div className="flex flex-row h-full">
       <SideBar selectedId={params?.dashboardId} />
-      <div className="overflow-scroll">
+      <div className="w-full overflow-scroll">
         <div className="flex flex-col h-screen">
           <PageHeader>
             <div className="flex grow justify-between pr-8">
