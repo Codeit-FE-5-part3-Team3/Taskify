@@ -13,6 +13,8 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
+import { useToast } from "@/components/ui/use-toast";
+
 const FormSchema = z.object({
   email: z.string().email(),
 });
@@ -21,6 +23,8 @@ export function InvitationForm({ dashboardId }: { dashboardId: number }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
+
+  const { toast } = useToast();
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     const response = await fetch("/api/dashboards/invitations", {
@@ -31,9 +35,37 @@ export function InvitationForm({ dashboardId }: { dashboardId: number }) {
       }),
     });
 
-    const d = await response.json();
-
-    console.log(d);
+    switch (response.status) {
+      case 201:
+        toast({
+          description: "초대가 완료되었습니다",
+        });
+        break;
+      case 400:
+        toast({
+          description: "이메일 형식이 올바르지 않습니다.",
+        });
+        break;
+      case 403:
+        toast({
+          description: "대시보드 초대 권한이 없습니다.",
+        });
+        break;
+      case 404:
+        toast({
+          description: "존재하지 않는 사용자입니다.",
+        });
+        break;
+      case 409:
+        toast({
+          description: "이미 대시보드에 초대된 멤버입니다.",
+        });
+        break;
+      default:
+        toast({
+          description: `알 수 없는 오류 발생: ${response.status}`,
+        });
+    }
   }
 
   return (
