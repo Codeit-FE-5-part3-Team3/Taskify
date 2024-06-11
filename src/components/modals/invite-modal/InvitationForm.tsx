@@ -70,9 +70,6 @@ export function InvitationForm({ dashboardId }: { dashboardId: number }) {
 
   return (
     <>
-      <AlertDialogHeader>
-        <AlertDialogTitle>초대하기</AlertDialogTitle>
-      </AlertDialogHeader>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
