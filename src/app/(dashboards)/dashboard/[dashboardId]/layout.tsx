@@ -23,30 +23,32 @@ export default async function DashboardPageLayout({ params, children }: Props) {
   const dashboard = await getDashboardTitle(params.dashboardId);
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row h-full">
       <SideBar selectedId={params?.dashboardId} />
-      <div className="flex flex-col grow">
-        <PageHeader>
-          <div className="flex grow justify-between pr-8">
-            <PageHeader.Title>
-              {dashboard.title}
-              {dashboard.createdByMe && (
-                <Image
-                  src={"/crown_icon.png"}
-                  width={20}
-                  height={16}
-                  alt="created by me"
-                />
-              )}
-            </PageHeader.Title>
-            <div className="flex gap-10 items-center">
-              <DashboardToolBar />
-              <MemberBar dashboardId={params.dashboardId} />
+      <div className="overflow-scroll">
+        <div className="flex flex-col h-screen">
+          <PageHeader>
+            <div className="flex grow justify-between pr-8">
+              <PageHeader.Title>
+                {dashboard.title}
+                {dashboard.createdByMe && (
+                  <Image
+                    src={"/crown_icon.png"}
+                    width={20}
+                    height={16}
+                    alt="created by me"
+                  />
+                )}
+              </PageHeader.Title>
+              <div className="flex gap-10 items-center">
+                <DashboardToolBar />
+                <MemberBar dashboardId={params.dashboardId} />
+              </div>
             </div>
-          </div>
-          <UserAvatar />
-        </PageHeader>
-        {children}
+            <UserAvatar />
+          </PageHeader>
+          <div className="h-full overflow-scroll"> {children}</div>
+        </div>
       </div>
     </div>
   );
