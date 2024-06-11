@@ -34,6 +34,22 @@ function getFirstCharacter(str: string) {
   }
 }
 
+const getBackgroundClass = (userId: number) => {
+  const classes = [
+    "bg-[#ffc85a]",
+    "bg-[#fdd446]",
+    "bg-[#9dd7ed]",
+    "bg-[#c4b1a2]",
+    "bg-[#a3c4a2]",
+    "bg-[#034694]",
+    "bg-[#e876ea]",
+    "bg-[#000]",
+    "bg-[#c3102b]",
+    "bg-[#7AC555]",
+  ];
+  return classes[userId % 10];
+};
+
 export default async function UserAvatar({}) {
   const userData = await getUserInfo();
   const fallback = getFirstCharacter(userData.nickname);
@@ -44,7 +60,11 @@ export default async function UserAvatar({}) {
         <button className="flex gap-3 pl-6 items-center border-l border-[#d9d9d9]">
           <Avatar className="rounded">
             <AvatarImage src={userData.profileImgUrl} width={38} height={38} />
-            <AvatarFallback className="bg-blue-400 text-white font-semibold">
+            <AvatarFallback
+              className={`text-white font-semibold ${getBackgroundClass(
+                userData.id,
+              )}`}
+            >
               {fallback}
             </AvatarFallback>
           </Avatar>

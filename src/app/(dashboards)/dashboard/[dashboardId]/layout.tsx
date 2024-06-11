@@ -5,7 +5,7 @@ import PageHeader from "@/components/ui/page-header/PageHeader";
 import UserAvatar from "@/components/user-avatar/UserAvatar";
 import { serverSideFetcher } from "@/lib/utils";
 import Image from "next/image";
-
+import { Toaster } from "@/components/ui/toaster";
 interface Props {
   params: { dashboardId: number };
   children: React.ReactNode;
@@ -41,13 +41,17 @@ export default async function DashboardPageLayout({ params, children }: Props) {
                 )}
               </PageHeader.Title>
               <div className="flex gap-10 items-center">
-                <DashboardToolBar />
+                <DashboardToolBar dashboardId={params.dashboardId} />
                 <MemberBar dashboardId={params.dashboardId} />
               </div>
             </div>
             <UserAvatar />
           </PageHeader>
-          <div className="h-full overflow-scroll"> {children}</div>
+          <div className="h-full overflow-scroll">
+            {" "}
+            {children}
+            <Toaster />
+          </div>
         </div>
       </div>
     </div>

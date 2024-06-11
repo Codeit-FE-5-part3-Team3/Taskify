@@ -55,128 +55,7 @@ export default async function MemberBar({
   dashboardId: number;
 }) {
   let members = await getMembers(dashboardId);
-  members = [
-    {
-      id: 0,
-      userId: 0,
-      email: "string",
-      nickname: "힘",
-      profileImageUrl: "string",
-      createdAt: "2024-06-06T08:03:33.357Z",
-      updatedAt: "2024-06-06T08:03:33.357Z",
-      isOwner: true,
-    },
-    {
-      id: 1,
-      userId: 1,
-      email: "string",
-      nickname: "들",
-      profileImageUrl: "string",
-      createdAt: "2024-06-06T08:03:33.357Z",
-      updatedAt: "2024-06-06T08:03:33.357Z",
-      isOwner: true,
-    },
-    {
-      id: 2,
-      userId: 2,
-      email: "string",
-      nickname: "구",
-      profileImageUrl: "string",
-      createdAt: "2024-06-06T08:03:33.357Z",
-      updatedAt: "2024-06-06T08:03:33.357Z",
-      isOwner: true,
-    },
-    {
-      id: 3,
-      userId: 3,
-      email: "string",
-      nickname: "나",
-      profileImageUrl: "string",
-      createdAt: "2024-06-06T08:03:33.357Z",
-      updatedAt: "2024-06-06T08:03:33.357Z",
-      isOwner: true,
-    },
-    {
-      id: 3,
-      userId: 4,
-      email: "string",
-      nickname: "그",
-      profileImageUrl: "string",
-      createdAt: "2024-06-06T08:03:33.357Z",
-      updatedAt: "2024-06-06T08:03:33.357Z",
-      isOwner: true,
-    },
-    {
-      id: 3,
-      userId: 5,
-      email: "string",
-      nickname: "만",
-      profileImageUrl: "string",
-      createdAt: "2024-06-06T08:03:33.357Z",
-      updatedAt: "2024-06-06T08:03:33.357Z",
-      isOwner: true,
-    },
-    {
-      id: 3,
-      userId: 7,
-      email: "string",
-      nickname: "할",
-      profileImageUrl: "string",
-      createdAt: "2024-06-06T08:03:33.357Z",
-      updatedAt: "2024-06-06T08:03:33.357Z",
-      isOwner: true,
-    },
-    {
-      id: 3,
-      userId: 8,
-      email: "string",
-      nickname: "까",
-      profileImageUrl: "string",
-      createdAt: "2024-06-06T08:03:33.357Z",
-      updatedAt: "2024-06-06T08:03:33.357Z",
-      isOwner: true,
-    },
-    {
-      id: 3,
-      userId: 10,
-      email: "string",
-      nickname: "까",
-      profileImageUrl: "string",
-      createdAt: "2024-06-06T08:03:33.357Z",
-      updatedAt: "2024-06-06T08:03:33.357Z",
-      isOwner: true,
-    },
-    {
-      id: 3,
-      userId: 6,
-      email: "string",
-      nickname: "까",
-      profileImageUrl: "string",
-      createdAt: "2024-06-06T08:03:33.357Z",
-      updatedAt: "2024-06-06T08:03:33.357Z",
-      isOwner: true,
-    },
-    {
-      id: 3,
-      userId: 4123,
-      email: "string",
-      nickname: "까",
-      profileImageUrl: "string",
-      createdAt: "2024-06-06T08:03:33.357Z",
-      updatedAt: "2024-06-06T08:03:33.357Z",
-      isOwner: true,
-    },
-    {
-      id: 3,
-      userId: 9,
-      email: "string",
-      nickname: "까",
-      profileImageUrl: "string",
-      createdAt: "2024-06-06T08:03:33.357Z",
-      updatedAt: "2024-06-06T08:03:33.357Z",
-      isOwner: true,
-    },
-  ];
+
   const firstFourMembers = members.slice(0, 4);
   const afterFourMembers = members.slice(4);
 
@@ -199,7 +78,7 @@ export default async function MemberBar({
           </Avatar>
         </li>
       ))}
-      {afterFourMembers && (
+      {afterFourMembers.length > 0 && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <li

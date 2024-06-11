@@ -1,35 +1,24 @@
 import getInvitationList from "@/util/api/getInvitationList";
 import InvitationList from "./InvitationList";
+import NoInvitations from "./NoInvitations";
+import { cn } from "@/lib/utils";
 
-interface Props {
-  page?: string;
-  keyword?: string;
-}
-
-type invitation = {
-  id: number;
-  inviter: {
-    id: number;
-    email: string;
-    nickname: string;
-  };
-  teamId: string;
-  dashboard: {
-    id: number;
-    title: string;
-  };
-  invitee: {
-    id: number;
-    email: string;
-    nickname: string;
-  };
-  inviteAccepted: boolean | null;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-export default async function InvitationBoard({ page, keyword }: Props) {
+export default async function InvitationBoard() {
   const invitations = await getInvitationList();
 
-  return <InvitationList invitations={invitations} />;
+  return (
+    <div
+      className={cn(
+        "px-7 py-8 flex flex-col gap-5 bg-white rounded-lg",
+        invitations.length > 0 ? "h-[600px]" : "h-[400px]",
+      )}
+    >
+      <span className="text-2xl font-bold">초대받은 대시보드</span>
+      {invitations.length > 0 ? (
+        <InvitationList invitations={invitations} />
+      ) : (
+        <NoInvitations />
+      )}
+    </div>
+  );
 }
