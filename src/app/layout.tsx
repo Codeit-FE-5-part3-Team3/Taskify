@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
-import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Taskify",
@@ -24,10 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={pretendard.className}>
-        {children}
-        <Toaster />
-      </body>
+      <body className={pretendard.className}>{children}</body>
     </html>
   );
 }
