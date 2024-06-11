@@ -37,8 +37,8 @@ export default async function DashboardPagination({
           <DashboardCreateButton />
         </li>
         {hasDashboard &&
-          data.dashboards.map((dashboard: dashboard) => (
-            <li key={dashboard.id}>
+          data.dashboards.map((dashboard: dashboard, index: number) => (
+            <li key={index}>
               <DashbaordLinkCard>
                 <Link
                   href={`/dashboard/${dashboard.id}`}
