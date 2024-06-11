@@ -166,9 +166,12 @@ export default function InvitationList({
           <span>수락여부</span>
         </div>
         <div className="flex flex-col h-full">
-          <ul className="flex flex-col h-[432px] overflow-y-scroll">
-            {filteredInvitations.map(
-              (invitation: invitation, index: number) => (
+          <ul className="flex flex-col h-[432px] overflow-y-auto">
+            {filteredInvitations
+              .filter(
+                (invitation: invitation) => invitation.inviteAccepted === null,
+              )
+              .map((invitation: invitation, index: number) => (
                 <li
                   key={invitation.id}
                   className={`${
@@ -177,8 +180,7 @@ export default function InvitationList({
                 >
                   <InvitationTuple invitation={invitation} />
                 </li>
-              ),
-            )}
+              ))}
           </ul>
         </div>
       </div>

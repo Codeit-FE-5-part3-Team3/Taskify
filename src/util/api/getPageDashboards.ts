@@ -1,4 +1,5 @@
 import { serverSideFetcher } from "@/lib/utils";
+import revalidate from "../revalidate";
 
 export async function getPageDashbaords(pageNumber: number) {
   const res = await serverSideFetcher(

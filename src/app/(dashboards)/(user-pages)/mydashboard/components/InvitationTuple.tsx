@@ -9,6 +9,8 @@ import {
   AlertDialogAction,
   AlertDialogFooter,
 } from "@/components/ui/alert-dialog";
+import { useToast } from "@/components/ui/use-toast";
+import revalidate from "@/util/revalidate";
 
 type invitation = {
   id: number;
@@ -39,17 +41,41 @@ export default function InvitationTuple({
 }) {
   const [isAcceptDialogOpen, setIsAcceptDialogOpen] = useState(false);
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
+  const { toast } = useToast();
 
-  const handleAccept = async () => {
-    // 수락 로직
-    console.log("Invitation accepted");
-    setIsAcceptDialogOpen(false);
-  };
+  const handleAccept = async (accepted: boolean) => {
+    try {
+      const response = await fetch("/api/dashboards/invitations", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          invitationId: invitation.id,
+          accepted: accepted,
+        }),
+      });
 
-  const handleReject = async () => {
-    // 거절 로직
-    console.log("Invitation rejected");
-    setIsRejectDialogOpen(false);
+      if (response.ok) {
+        await revalidate();
+        const msg = `초대가 ${accepted ? "수락" : "거절"} 되었습니다`;
+        toast({
+          description: msg,
+        });
+      } else {
+        const msg = `대충 뭔가 문제 발생`;
+        toast({
+          description: msg,
+        });
+      }
+    } catch (error) {
+      const msg = `에러 블라블라`;
+      toast({
+        description: msg,
+      });
+    } finally {
+      setIsAcceptDialogOpen(false);
+    }
   };
 
   return (
@@ -82,7 +108,7 @@ export default function InvitationTuple({
               </AlertDialogCancel>
               <AlertDialogAction asChild>
                 <button
-                  onClick={handleAccept}
+                  onClick={() => handleAccept(true)}
                   className="bg-[#5534da] text-white px-[46px] py-3.5 rounded-lg hover:bg-[#4524ca]"
                 >
                   수락
@@ -116,7 +142,7 @@ export default function InvitationTuple({
               </AlertDialogCancel>
               <AlertDialogAction asChild>
                 <button
-                  onClick={handleReject}
+                  onClick={() => handleAccept(false)}
                   className="bg-red-500 text-white px-[46px] py-3.5 rounded-lg hover:bg-red-600"
                 >
                   거절

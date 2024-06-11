@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/toaster";
 import DashboardCreateButton from "./components/DashboardCreateButton";
 import DashboardPagination from "./components/DashboardPagination";
 import InvitationBoard from "./components/InvitationBoard";
@@ -15,6 +16,7 @@ export default function MyDashboardPage({
       <div className="flex flex-col w-[1022px] gap-11">
         <DashboardPagination pageNumber={currentPage} />
         <InvitationBoard />
+        <Toaster />
       </div>
     </main>
   );
