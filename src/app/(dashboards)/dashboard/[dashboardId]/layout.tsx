@@ -3,7 +3,7 @@ import MemberBar from "@/components/member-bar/MemberBar";
 import SideBar from "@/components/side-bar/SideBar";
 import PageHeader from "@/components/ui/page-header/PageHeader";
 import UserAvatar from "@/components/user-avatar/UserAvatar";
-import { serverSideFetcher } from "@/lib/utils";
+import getDashboardData from "@/util/api/getDashboardData";
 import Image from "next/image";
 import { Toaster } from "@/components/ui/toaster";
 interface Props {
@@ -11,16 +11,8 @@ interface Props {
   children: React.ReactNode;
 }
 
-async function getDashboardTitle(dashboardId: number) {
-  const response = await serverSideFetcher(
-    `https:///sp-taskify-api.vercel.app/5-3/dashboards/${dashboardId}`,
-  );
-  const data = await response?.json();
-  return data;
-}
-
 export default async function DashboardPageLayout({ params, children }: Props) {
-  const dashboard = await getDashboardTitle(params.dashboardId);
+  const dashboard = await getDashboardData(params.dashboardId);
 
   return (
     <div className="flex flex-row h-full">
