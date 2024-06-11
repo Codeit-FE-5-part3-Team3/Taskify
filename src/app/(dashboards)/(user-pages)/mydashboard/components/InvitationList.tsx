@@ -148,8 +148,7 @@ export default function InvitationList({
 
   return (
     <>
-      <div className="px-7 py-8 flex flex-col gap-5 bg-white rounded-lg h-[600px]">
-        <span className="text-2xl font-bold">초대받은 대시보드</span>
+      <div className="flex flex-col gap-5">
         <div className="w-full border border-gray-300 px-4 py-2 rounded-md flex gap-2">
           <button type="submit">
             <Image src={"/dot-bo-ki.svg"} width={24} height={24} alt="search" />
