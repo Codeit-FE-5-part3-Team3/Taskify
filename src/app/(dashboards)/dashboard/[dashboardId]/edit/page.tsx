@@ -5,10 +5,16 @@ import MemberEdit from "./components/MemberEdit";
 
 interface Props {
   params: { dashboardId: number };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default async function DashboardEditPage({ params }: Props) {
+export default async function DashboardEditPage({
+  params,
+  searchParams,
+}: Props) {
   const dashboardData = await getDashboardData(params.dashboardId);
+  const currentMemberPage = Number(searchParams?.memberPage) || 1;
+  const currentInvitationPage = Number(searchParams?.invitationPage) || 1;
 
   return (
     <main className="flex flex-col p-5 bg-gray-600 gap-3 h-full">
@@ -19,7 +25,11 @@ export default async function DashboardEditPage({ params }: Props) {
           currentColor={dashboardData.color}
           dashboardId={params.dashboardId}
         />
-        <MemberEdit />
+        <MemberEdit
+          memberPage={currentMemberPage}
+          invitationPage={currentInvitationPage}
+          dashboardId={params.dashboardId}
+        />
       </div>
     </main>
   );
