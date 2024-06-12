@@ -2,6 +2,8 @@ import PaginationButtonBar from "@/components/pagination-button-bar/PaginationBu
 import { getPageMembers } from "@/util/api/getPageMember";
 import { Avatar } from "@/components/ui/avatar";
 import CustomAvatar from "@/components/custom-avatar/CustomAvatar";
+import MemberDeleteButton from "./MemberDeleteButton";
+import Image from "next/image";
 
 interface Props {
   memberPage: number;
@@ -64,10 +66,21 @@ export default async function MemberEdit({
               </Avatar>
               <span>{member.nickname}</span>
             </div>
-
-            <button className="text-violet-100 px-7 py-2 border border-gray-300 rounded">
-              삭제
-            </button>
+            {member.isOwner ? (
+              <div className="relative px-7 py-4">
+                <Image
+                  src={"/crown_icon.png"}
+                  width={18}
+                  height={14}
+                  alt="얘가 방장"
+                />
+              </div>
+            ) : (
+              <MemberDeleteButton
+                nickname={member.nickname}
+                memberId={member.id}
+              />
+            )}
           </li>
         ))}
       </ul>

@@ -2,7 +2,7 @@ import ReturnButton from "@/components/return-button/ReturnButton";
 import { DashboardEditForm } from "./components/DashboardEditForm";
 import getDashboardData from "@/util/api/getDashboardData";
 import MemberEdit from "./components/MemberEdit";
-
+import { Toaster } from "@/components/ui/toaster";
 interface Props {
   params: { dashboardId: number };
   searchParams: { [key: string]: string | string[] | undefined };
