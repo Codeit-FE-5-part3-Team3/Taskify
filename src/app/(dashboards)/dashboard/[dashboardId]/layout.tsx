@@ -33,14 +33,15 @@ export default async function DashboardPageLayout({ params, children }: Props) {
                 )}
               </PageHeader.Title>
               <div className="flex gap-10 items-center">
-                <DashboardToolBar dashboardId={params.dashboardId} />
+                {dashboard.createdByMe && (
+                  <DashboardToolBar dashboardId={params.dashboardId} />
+                )}
                 <MemberBar dashboardId={params.dashboardId} />
               </div>
             </div>
             <UserAvatar />
           </PageHeader>
           <div className="h-full overflow-scroll">
-            {" "}
             {children}
             <Toaster />
           </div>
