@@ -9,7 +9,8 @@ import {
   AlertDialogFooter,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/components/ui/use-toast";
-import revalidate from "@/util/revalidate";
+import revalidateMyDashboard from "@/util/revalidateMyDashboard";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -34,12 +35,12 @@ export default function DashboardDeleteButton({ dashboardId }: Props) {
       },
     });
 
-    if (response.status !== 500) {
+    if (!response.ok) {
       toast({
         description: "삭제 도중 오류 발생",
       });
     } else {
-      revalidate();
+      revalidateMyDashboard();
       router.push("/mydashboard");
     }
     setIsOpen(false);
