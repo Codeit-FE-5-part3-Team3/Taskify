@@ -40,7 +40,7 @@ export default function DashboardInvitedTuple({
         },
       },
     );
-    if (response.status !== 500) {
+    if (!response.ok) {
       toast({
         description: "어라라",
       });

@@ -33,7 +33,7 @@ export default function MemberDeleteButton({ nickname, memberId }: Props) {
       },
     });
 
-    if (response.status !== 500) {
+    if (!response.ok) {
       const errorData = await response.json();
       toast({
         description:
