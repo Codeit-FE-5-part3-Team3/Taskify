@@ -1,5 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { NextResponse } from "next/server";
 
 export async function DELETE(req: Request) {
   const session = await getServerSession(authOptions);
@@ -23,8 +24,6 @@ export async function DELETE(req: Request) {
     );
   }
 
-  console.log(invitationId, dashboardId);
-
   const backendResponse = await fetch(
     `https://sp-taskify-api.vercel.app/5-3/dashboards/${dashboardId}/invitations/${invitationId}`,
     {
@@ -36,9 +35,8 @@ export async function DELETE(req: Request) {
     },
   );
 
-  const data = await backendResponse.json();
-
-  return new Response(JSON.stringify(data), {
-    status: backendResponse.status,
-  });
+  const resStatus =
+    backendResponse.status === 204 ? 201 : backendResponse.status;
+  const resMessage = backendResponse.status === 204 ? "삭제 성공" : "삭제 실패";
+  return NextResponse.json({ message: resMessage }, { status: resStatus });
 }
