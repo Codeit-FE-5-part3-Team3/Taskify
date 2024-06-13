@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { useToast } from "@/components/ui/use-toast";
+import revalidate from "@/util/revalidate";
 
 const FormSchema = z.object({
   email: z.string().email(),
@@ -66,13 +67,11 @@ export function InvitationForm({ dashboardId }: { dashboardId: number }) {
           description: `알 수 없는 오류 발생: ${response.status}`,
         });
     }
+    revalidate();
   }
 
   return (
     <>
-      <AlertDialogHeader>
-        <AlertDialogTitle>초대하기</AlertDialogTitle>
-      </AlertDialogHeader>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

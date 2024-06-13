@@ -5,6 +5,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import CustomAvatar from "../custom-avatar/CustomAvatar";
 
 type member = {
   id: number;
@@ -25,30 +26,6 @@ async function getMembers(dashboardId: number) {
   return data.members;
 }
 
-function getFirstCharacter(str: string) {
-  if (str.length > 0) {
-    return str.charAt(0);
-  } else {
-    return "";
-  }
-}
-
-const getBackgroundClass = (userId: number) => {
-  const classes = [
-    "bg-[#ffc85a]",
-    "bg-[#fdd446]",
-    "bg-[#9dd7ed]",
-    "bg-[#c4b1a2]",
-    "bg-[#a3c4a2]",
-    "bg-[#034694]",
-    "bg-[#e876ea]",
-    "bg-[#000]",
-    "bg-[#c3102b]",
-    "bg-[#7AC555]",
-  ];
-  return classes[userId % 10];
-};
-
 export default async function MemberBar({
   dashboardId,
 }: {
@@ -67,14 +44,12 @@ export default async function MemberBar({
       {firstFourMembers.map((member: member) => (
         <li key={member.userId}>
           <Avatar className="-ml-2">
-            <AvatarImage src={member.profileImageUrl} width={38} height={38} />
-            <AvatarFallback
-              className={`text-white font-semibold ${getBackgroundClass(
-                member.userId,
-              )}`}
-            >
-              {getFirstCharacter(member.nickname)}
-            </AvatarFallback>
+            <CustomAvatar
+              imgUrl={member.profileImageUrl}
+              nickname={member.nickname}
+              userId={member.userId}
+              size={38}
+            />
           </Avatar>
         </li>
       ))}
@@ -93,18 +68,12 @@ export default async function MemberBar({
               {afterFourMembers.map((member: member) => (
                 <li key={member.userId}>
                   <Avatar className="-mr-2">
-                    <AvatarImage
-                      src={member.profileImageUrl}
-                      width={38}
-                      height={38}
+                    <CustomAvatar
+                      imgUrl={member.profileImageUrl}
+                      nickname={member.nickname}
+                      userId={member.userId}
+                      size={38}
                     />
-                    <AvatarFallback
-                      className={`text-white font-semibold ${getBackgroundClass(
-                        member.userId,
-                      )}`}
-                    >
-                      {getFirstCharacter(member.nickname)}
-                    </AvatarFallback>
                   </Avatar>
                 </li>
               ))}
