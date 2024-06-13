@@ -59,7 +59,7 @@ export default async function InvitedList({
             </>
           )}
           <AlertDialog>
-            <AlertDialogTrigger>
+            <AlertDialogTrigger asChild>
               <button className="bg-violet-100 text-white text-sm px-4 py-2 flex gap-2 items-center rounded">
                 <Image
                   src={"/white-add-box.svg"}

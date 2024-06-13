@@ -1,23 +1,24 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { NextResponse } from "next/server";
 
-export async function DELETE(req: any) {
+export async function DELETE(
+  req: Request,
+  { params }: { params: { memberId: string } },
+) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return new Response(JSON.stringify({ message: "Unauthorized" }), {
-      status: 401,
-    });
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  // req.nextUrl.pathname에서 memberId 추출
-  const pathname = req.nextUrl.pathname;
-  const memberId = pathname.split("/").pop();
+  const memberId = params.memberId;
   console.log(memberId);
   if (!memberId) {
-    return new Response(JSON.stringify({ message: "memberId is required" }), {
-      status: 400,
-    });
+    return NextResponse.json(
+      { message: "memberId is required" },
+      { status: 400 },
+    );
   }
 
   const backendResponse = await fetch(
@@ -31,9 +32,8 @@ export async function DELETE(req: any) {
     },
   );
 
-  const data = await backendResponse.json();
-
-  return new Response(JSON.stringify(data), {
-    status: backendResponse.status,
-  });
+  const resStatus =
+    backendResponse.status === 204 ? 201 : backendResponse.status;
+  const resMessage = backendResponse.status === 204 ? "삭제 성공" : "삭제 실패";
+  return NextResponse.json({ message: resMessage }, { status: resStatus });
 }
