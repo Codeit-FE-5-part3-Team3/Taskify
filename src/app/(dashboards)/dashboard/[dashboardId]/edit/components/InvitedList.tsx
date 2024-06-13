@@ -3,6 +3,14 @@ import { getPageInvited } from "@/util/api/getPageInvited";
 
 import NoInvitations from "@/app/(dashboards)/(user-pages)/mydashboard/components/NoInvitations";
 import DashboardInvitedTuple from "./DashboardInvitedTuple";
+import InviteModal from "@/components/modals/invite-modal/InviteModal";
+
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+} from "@/components/ui/alert-dialog";
+import Image from "next/image";
 
 interface Props {
   memberPage: number;
@@ -30,25 +38,43 @@ export default async function InvitedList({
       <div className="w-full flex justify-between items-center">
         <span className="text-2xl font-bold">초대내역</span>
 
-        {invitations.length > 0 && (
-          <div className="flex items-center gap-4">
-            <span>
-              {memberPage} / {maxPage}
-            </span>
-            <div className="flex">
-              <PaginationButtonBar
-                isFirstPage={isFirstInvtationPage}
-                isLastPage={isLastInvitationPage}
-                prevPage={`${currentUrl}?memberPage=${memberPage}&invitationPage=${
-                  invitationPage - 1
-                }`}
-                nextPage={`${currentUrl}?memberPage=${memberPage}&invitationPage=${
-                  invitationPage + 1
-                }`}
-              />
-            </div>
-          </div>
-        )}
+        <div className="flex items-center gap-4">
+          {invitations.length > 0 && (
+            <>
+              <span>
+                {memberPage} / {maxPage}
+              </span>
+              <div className="flex">
+                <PaginationButtonBar
+                  isFirstPage={isFirstInvtationPage}
+                  isLastPage={isLastInvitationPage}
+                  prevPage={`${currentUrl}?memberPage=${memberPage}&invitationPage=${
+                    invitationPage - 1
+                  }`}
+                  nextPage={`${currentUrl}?memberPage=${memberPage}&invitationPage=${
+                    invitationPage + 1
+                  }`}
+                />
+              </div>
+            </>
+          )}
+          <AlertDialog>
+            <AlertDialogTrigger>
+              <button className="bg-violet-100 text-white text-sm px-4 py-2 flex gap-2 items-center rounded">
+                <Image
+                  src={"/white-add-box.svg"}
+                  width={16}
+                  height={16}
+                  alt="초대하기"
+                />
+                초대하기
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <InviteModal dashboardId={dashboardId} />
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       </div>
       {invitations.length > 0 ? (
         <>
