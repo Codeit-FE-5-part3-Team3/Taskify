@@ -1,26 +1,21 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-export async function DELETE(req: Request) {
+export async function DELETE(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return new Response(JSON.stringify({ message: "Unauthorized" }), {
-      status: 401,
-    });
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const url = new URL(req.url);
-  const invitationId = url.searchParams.get("invitationId");
-  const dashboardId = url.searchParams.get("dashboardId");
+  const invitationId = req.nextUrl.searchParams.get("invitationId");
+  const dashboardId = req.nextUrl.searchParams.get("dashboardId");
 
   if (!invitationId || !dashboardId) {
-    return new Response(
-      JSON.stringify({ message: "invitationId and dashboardId are required" }),
-      {
-        status: 400,
-      },
+    return NextResponse.json(
+      { message: "invitationId and dashboardId are required" },
+      { status: 400 },
     );
   }
 
