@@ -6,6 +6,7 @@ import {
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import InviteModal from "../modals/invite-modal/InviteModal";
+import Link from "next/link";
 
 export default function DashboardToolBar({
   dashboardId,
@@ -14,10 +15,12 @@ export default function DashboardToolBar({
 }) {
   return (
     <div className="flex gap-4">
-      <ToolBarButton>
-        <Image src={"/settings.svg"} width={20} height={20} alt="settings" />
-        관리
-      </ToolBarButton>
+      <Link href={`/dashboard/${dashboardId}/edit`}>
+        <ToolBarButton>
+          <Image src={"/settings.svg"} width={20} height={20} alt="settings" />
+          관리
+        </ToolBarButton>
+      </Link>
       <AlertDialog>
         <AlertDialogTrigger>
           <ToolBarButton>

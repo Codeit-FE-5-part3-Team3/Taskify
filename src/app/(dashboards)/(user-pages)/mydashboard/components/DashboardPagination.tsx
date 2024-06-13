@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import DashboardLabel from "@/components/ui/dashboard-label/DashboardLabel";
+import PaginationButtonBar from "@/components/pagination-button-bar/PaginationButtonBar";
 interface DashboardPaginationProps {
   pageNumber: number;
 }
@@ -59,38 +60,12 @@ export default async function DashboardPagination({
           </span>
 
           <div className="flex bg-white">
-            <Link href={`/mydashboard/?page=${pageNumber - 1}`}>
-              <button
-                disabled={isFirstPage}
-                className="border border-gray-300 p-2.5 rounded-l-lg flex"
-              >
-                <ChevronLeft
-                  className={cn(
-                    {
-                      "text-gray-300": isFirstPage,
-                      "text-black": !isFirstPage,
-                    },
-                    "w-9 h-9",
-                  )}
-                />
-              </button>
-            </Link>
-            <Link href={`/mydashboard/?page=${pageNumber + 1}`}>
-              <button
-                disabled={isLastPage}
-                className="border border-gray-300 p-2.5 rounded-r-lg flex"
-              >
-                <ChevronRight
-                  className={cn(
-                    {
-                      "text-gray-300": isLastPage,
-                      "text-black": !isLastPage,
-                    },
-                    "w-9 h-9",
-                  )}
-                />
-              </button>
-            </Link>
+            <PaginationButtonBar
+              prevPage={`/mydashboard/?page=${pageNumber - 1}`}
+              nextPage={`/mydashboard/?page=${pageNumber + 1}`}
+              isFirstPage={isFirstPage}
+              isLastPage={isLastPage}
+            />
           </div>
         </div>
       )}

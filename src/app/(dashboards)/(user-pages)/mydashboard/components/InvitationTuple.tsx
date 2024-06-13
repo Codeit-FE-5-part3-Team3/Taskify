@@ -90,7 +90,7 @@ export default function InvitationTuple({
           <AlertDialogTrigger asChild>
             <button
               onClick={() => setIsAcceptDialogOpen(true)}
-              className="text-white px-7 bg-violet-100 rounded h-8"
+              className="text-white px-7 bg-violet-100 rounded h-8 hover:bg-purple-600"
             >
               수락
             </button>
@@ -109,7 +109,7 @@ export default function InvitationTuple({
               <AlertDialogAction asChild>
                 <button
                   onClick={() => handleAccept(true)}
-                  className="bg-[#5534da] text-white px-[46px] py-3.5 rounded-lg hover:bg-[#4524ca]"
+                  className="bg-violet-100 text-white px-[46px] py-3.5 rounded-lg hover:bg-purple-600"
                 >
                   수락
                 </button>
