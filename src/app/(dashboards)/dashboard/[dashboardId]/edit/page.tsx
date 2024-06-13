@@ -3,6 +3,7 @@ import { DashboardEditForm } from "./components/DashboardEditForm";
 import getDashboardData from "@/util/api/getDashboardData";
 import MemberEdit from "./components/MemberEdit";
 import InvitedList from "./components/InvitedList";
+import DashboardDeleteButton from "./components/DashboardDeleteButton";
 
 interface Props {
   params: { dashboardId: number };
@@ -18,7 +19,7 @@ export default async function DashboardEditPage({
   const currentInvitationPage = Number(searchParams?.invitationPage) || 1;
 
   return (
-    <main className="flex flex-col p-5 bg-gray-600 gap-3 h-full">
+    <main className="flex flex-col p-5 bg-gray-100 gap-3 h-full overflow-auto">
       <ReturnButton href={`/dashboard/${params.dashboardId}`} />
       <div className="w-[620px] flex flex-col gap-3">
         <DashboardEditForm
@@ -37,6 +38,7 @@ export default async function DashboardEditPage({
           invitationPage={currentInvitationPage}
           dashboardId={params.dashboardId}
         />
+        <DashboardDeleteButton dashboardId={params.dashboardId} />
       </div>
     </main>
   );

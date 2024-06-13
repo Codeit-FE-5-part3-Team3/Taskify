@@ -65,7 +65,7 @@ export function DashboardEditForm({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-[620px] space-y-6 rounded-lg bg-blue-100 mt-3 p-7 flex flex-col"
+          className="w-[620px] space-y-6 rounded-lg bg-white mt-3 p-7 flex flex-col"
         >
           <div className="flex justify-between w-full ">
             <span className="text-xl font-bold text-black">

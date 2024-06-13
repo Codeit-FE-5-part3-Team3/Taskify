@@ -34,7 +34,7 @@ export default async function InvitedList({
   const currentUrl = `/dashboard/${dashboardId}/edit`;
 
   return (
-    <div className="rounded-lg bg-blue-100 p-7 flex flex-col h-[460px]">
+    <div className="rounded-lg bg-white p-7 flex flex-col h-[460px]">
       <div className="w-full flex justify-between items-center">
         <span className="text-2xl font-bold">초대내역</span>
 
