@@ -2,15 +2,17 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { NextResponse } from "next/server";
 
-export async function DELETE(req: any) {
+export async function DELETE(
+  req: Request,
+  { params }: { params: { dashboardId: string } },
+) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const pathname = req.nextUrl.pathname;
-  const dashboardId = pathname.split("/").pop();
+  const dashboardId = params.dashboardId;
   console.log(dashboardId);
   if (!dashboardId) {
     return NextResponse.json(
