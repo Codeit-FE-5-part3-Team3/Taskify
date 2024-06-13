@@ -1,10 +1,8 @@
 import PaginationButtonBar from "@/components/pagination-button-bar/PaginationButtonBar";
 import { getPageInvited } from "@/util/api/getPageInvited";
-import { Avatar } from "@/components/ui/avatar";
-import CustomAvatar from "@/components/custom-avatar/CustomAvatar";
-import MemberDeleteButton from "./MemberDeleteButton";
-import Image from "next/image";
+
 import NoInvitations from "@/app/(dashboards)/(user-pages)/mydashboard/components/NoInvitations";
+import DashboardInvitedTuple from "./DashboardInvitedTuple";
 
 interface Props {
   memberPage: number;
@@ -18,13 +16,13 @@ export default async function InvitedList({
   dashboardId,
 }: Props) {
   const { invitations, totalCount } = await getPageInvited(
-    memberPage,
+    invitationPage,
     dashboardId,
   );
   const maxPage = Math.max(1, Math.ceil(totalCount / 4));
 
-  const isLastMemberPage = memberPage === maxPage;
-  const isFirstMemberPage = memberPage === 1;
+  const isLastInvitationPage = invitationPage === maxPage;
+  const isFirstInvtationPage = invitationPage === 1;
   const currentUrl = `/dashboard/${dashboardId}/edit`;
 
   return (
@@ -39,14 +37,14 @@ export default async function InvitedList({
             </span>
             <div className="flex">
               <PaginationButtonBar
-                isFirstPage={isFirstMemberPage}
-                isLastPage={isLastMemberPage}
-                prevPage={`${currentUrl}?memberPage=${
-                  memberPage - 1
-                }&invitationPage=${invitationPage}`}
-                nextPage={`${currentUrl}?memberPage=${
-                  memberPage + 1
-                }&invitationPage=${invitationPage}`}
+                isFirstPage={isFirstInvtationPage}
+                isLastPage={isLastInvitationPage}
+                prevPage={`${currentUrl}?memberPage=${memberPage}&invitationPage=${
+                  invitationPage - 1
+                }`}
+                nextPage={`${currentUrl}?memberPage=${memberPage}&invitationPage=${
+                  invitationPage + 1
+                }`}
               />
             </div>
           </div>
@@ -56,7 +54,7 @@ export default async function InvitedList({
         <>
           <span className="text-gray-400 mt-7">이메일</span>
           <ul>
-            {invitations.map((member: any, index: number) => (
+            {invitations.map((invitation: any, index: number) => (
               <li
                 key={index}
                 className={`py-4 flex justify-between ${
@@ -65,32 +63,11 @@ export default async function InvitedList({
                     : ""
                 }`}
               >
-                <div className="flex gap-3 items-center">
-                  <Avatar>
-                    <CustomAvatar
-                      imgUrl={member.profileImageUrl}
-                      nickname={member.nickname}
-                      userId={member.userId}
-                      size={38}
-                    />
-                  </Avatar>
-                  <span>{member.nickname}</span>
-                </div>
-                {member.isOwner ? (
-                  <div className="relative px-7 py-4">
-                    <Image
-                      src={"/crown_icon.png"}
-                      width={18}
-                      height={14}
-                      alt="얘가 방장"
-                    />
-                  </div>
-                ) : (
-                  <MemberDeleteButton
-                    nickname={member.nickname}
-                    memberId={member.id}
-                  />
-                )}
+                <DashboardInvitedTuple
+                  email={invitation.invitee.email}
+                  invitationId={invitation.id}
+                  dashboardId={dashboardId}
+                />
               </li>
             ))}
           </ul>

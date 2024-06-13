@@ -43,8 +43,8 @@ export default function MemberDeleteButton({ nickname, memberId }: Props) {
       toast({
         description: `${nickname}님은 우주선을 타고 먼길을 떠났습니다... 그는 좋은 ${nickname} 이었습니다`,
       });
+      revalidate();
     }
-    revalidate();
     setIsOpen(false);
   };
 
