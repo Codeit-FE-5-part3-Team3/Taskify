@@ -75,6 +75,24 @@ export default function CommentComponent({ comment }: { comment: Comment }) {
     }
   }
 
+  async function onDelete() {
+    const response = await fetch(`/api/comments/${comment.id}`, {
+      method: "DELETE",
+    });
+    const res = await response.json();
+    if (response.ok) {
+      toast({
+        description: "댓글이 삭제되었습니다",
+      });
+      setIsEditing(false);
+      revalidate();
+    } else {
+      toast({
+        description: `알 수 없는 오류 발생: ${res.message}`,
+      });
+    }
+  }
+
   return (
     <div className="flex border border-gray-300 rounded p-2 gap-2.5">
       <Avatar>
@@ -140,13 +158,13 @@ export default function CommentComponent({ comment }: { comment: Comment }) {
         ) : (
           <p>{comment.content}</p>
         )}
+        {!isEditing && (
+          <div className="flex gap-2 mt-1.5 text-xs underline text-gray-400">
+            <button onClick={() => setIsEditing(true)}>수정</button>
+            <button onClick={() => onDelete}>삭제</button>
+          </div>
+        )}
       </div>
-      {!isEditing && (
-        <div className="flex gap-2">
-          <button onClick={() => setIsEditing(true)}>수정</button>
-          <button>삭제</button>
-        </div>
-      )}
     </div>
   );
 }

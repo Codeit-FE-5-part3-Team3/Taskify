@@ -1,7 +1,7 @@
 import { serverSideFetcher } from "@/lib/utils";
 import Comment from "./Comment";
 
-type Comment = {
+type CommentT = {
   id: number;
   content: string;
   createdAt: string;
@@ -26,7 +26,7 @@ export default async function CommentList({ cardId }: { cardId: number }) {
   const comments = await getComments(cardId);
   return (
     <ul className="flex flex-col gap-4 overflow-auto h-52">
-      {comments.map((comment: Comment) => (
+      {comments.map((comment: CommentT) => (
         <li key={comment.id}>
           <Comment comment={comment} />
         </li>

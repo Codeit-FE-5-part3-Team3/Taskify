@@ -33,3 +33,33 @@ export async function PUT(
 
   return NextResponse.json(data, { status: backendResponse.status });
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { commentId: string } },
+) {
+  const { commentId } = params;
+
+  const backendResponse = await fetch(
+    `https://sp-taskify-api.vercel.app/5-3/comments/${commentId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (backendResponse.ok) {
+    return NextResponse.json(
+      { message: "댓글이 삭제되었습니다" },
+      { status: 200 },
+    );
+  } else {
+    const data = await backendResponse.json();
+    return NextResponse.json(
+      { message: `삭제 실패: ${data.message}` },
+      { status: backendResponse.status },
+    );
+  }
+}
