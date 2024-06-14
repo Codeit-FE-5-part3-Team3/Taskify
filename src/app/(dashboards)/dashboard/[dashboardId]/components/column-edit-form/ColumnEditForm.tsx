@@ -25,9 +25,11 @@ const formSchema = z.object({
 export function ColumnEditForm({
   title,
   columnId,
+  children,
 }: {
   columnId: number;
   title: string;
+  children?: React.ReactNode;
 }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -73,17 +75,21 @@ export function ColumnEditForm({
             )}
           />
           <AlertDialogFooter>
-            <DeleteColumnButton />
-            <AlertDialogCancel className="px-[46px] py-3.5 border rounded-lg border-[#d9d9d9]">
-              취소
-            </AlertDialogCancel>
-            <AlertDialogAction
-              type="submit"
-              disabled={!form.formState.isValid}
-              className="bg-[#5534da] text-white px-[46px] py-3.5 rounded-lg hover:bg-[#4524ca]"
-            >
-              변경
-            </AlertDialogAction>
+            <div className="w-full flex justify-between">
+              {children}
+              <div className="flex gap-2">
+                <AlertDialogCancel className="px-[46px] py-3.5 border rounded-lg border-[#d9d9d9]">
+                  취소
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  type="submit"
+                  disabled={!form.formState.isValid}
+                  className="bg-[#5534da] text-white px-[46px] py-3.5 rounded-lg hover:bg-[#4524ca]"
+                >
+                  변경
+                </AlertDialogAction>
+              </div>
+            </div>
           </AlertDialogFooter>
         </form>
       </Form>
