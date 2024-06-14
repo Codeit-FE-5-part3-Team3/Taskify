@@ -39,12 +39,18 @@ export async function DELETE(
   { params }: { params: { commentId: string } },
 ) {
   const { commentId } = params;
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
 
   const backendResponse = await fetch(
     `https://sp-taskify-api.vercel.app/5-3/comments/${commentId}`,
     {
       method: "DELETE",
       headers: {
+        Authorization: `Bearer ${session.accessToken}`,
         "Content-Type": "application/json",
       },
     },

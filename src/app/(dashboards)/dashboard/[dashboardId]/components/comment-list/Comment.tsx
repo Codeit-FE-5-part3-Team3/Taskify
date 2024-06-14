@@ -161,7 +161,7 @@ export default function CommentComponent({ comment }: { comment: Comment }) {
         {!isEditing && (
           <div className="flex gap-2 mt-1.5 text-xs underline text-gray-400">
             <button onClick={() => setIsEditing(true)}>수정</button>
-            <button onClick={() => onDelete}>삭제</button>
+            <button onClick={onDelete}>삭제</button>
           </div>
         )}
       </div>
