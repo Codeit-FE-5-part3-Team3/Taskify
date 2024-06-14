@@ -21,7 +21,7 @@ export default async function Columns({
     return;
   }
   return (
-    <div className="w-full overflow-scroll">
+    <div className="w-full overflow-auto">
       <ul className="flex bg-[#FAFAFA] overflow-auto">
         {columns.map((column: IColumn) => (
           <li

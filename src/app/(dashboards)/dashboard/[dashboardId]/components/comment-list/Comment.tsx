@@ -10,6 +10,15 @@ import revalidate from "@/util/revalidate";
 import { Button } from "@/components/ui/button";
 import CustomAvatar from "@/components/custom-avatar/CustomAvatar";
 import { Avatar } from "@/components/ui/avatar";
+import Image from "next/image";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogTrigger,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 
 function formatDateWithTime(dateString: string): string {
   const date = new Date(dateString);
@@ -43,6 +52,7 @@ const FormSchema = z.object({
 
 export default function CommentComponent({ comment }: { comment: Comment }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false); // State for managing delete dialog
   const { toast } = useToast();
 
   const time = comment.updatedAt ? comment.updatedAt : comment.createdAt;
@@ -84,7 +94,8 @@ export default function CommentComponent({ comment }: { comment: Comment }) {
       toast({
         description: "댓글이 삭제되었습니다",
       });
-      setIsEditing(false);
+      setIsDeleting(false); // Close the delete dialog
+      setIsEditing(false); // Exit editing mode if deletion successful
       revalidate();
     } else {
       toast({
@@ -161,7 +172,32 @@ export default function CommentComponent({ comment }: { comment: Comment }) {
         {!isEditing && (
           <div className="flex gap-2 mt-1.5 text-xs underline text-gray-400">
             <button onClick={() => setIsEditing(true)}>수정</button>
-            <button onClick={onDelete}>삭제</button>
+            <AlertDialog open={isDeleting} onOpenChange={setIsDeleting}>
+              <AlertDialogTrigger asChild>
+                <button>삭제</button>
+              </AlertDialogTrigger>
+              <AlertDialogContent className="w-fit">
+                <Image
+                  src={"/delete-sure.jpg"}
+                  width={900}
+                  height={506}
+                  objectFit="contain"
+                  alt="삭제"
+                />
+                정말로 댓글을 삭제하시겠습니까?
+                <div className="flex w-full justify-center gap-3">
+                  <AlertDialogCancel>취소</AlertDialogCancel>
+                  <AlertDialogAction
+                    asChild
+                    onClick={onDelete} // Call onDelete when delete button in dialog is clicked
+                  >
+                    <button className="bg-red-500 text-white px-4 rounded hover:bg-red-600">
+                      삭제
+                    </button>
+                  </AlertDialogAction>
+                </div>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         )}
       </div>

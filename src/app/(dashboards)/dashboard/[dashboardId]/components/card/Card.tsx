@@ -19,7 +19,11 @@ type CardProps = {
 };
 
 export function CardList({ children }: CardProps) {
-  return <div className="flex flex-col gap-4 overflow-auto">{children}</div>;
+  return (
+    <div className="flex flex-col gap-4 overflow-auto scrollbar-hide">
+      {children}
+    </div>
+  );
 }
 
 export function Card({ children, cardData, column }: CardProps) {
