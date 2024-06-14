@@ -34,7 +34,7 @@ export interface ICard {
   description: string;
   tags: string[];
   dueDate: string;
-  assignee: IAsignee;
+  assignee?: IAsignee;
   imageUrl?: string;
   teamId: string;
   dashboardId: number;

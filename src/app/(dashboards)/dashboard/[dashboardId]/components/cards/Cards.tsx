@@ -8,6 +8,8 @@ import CardTag from "../card-tag/CardTag";
 import formatDate from "@/util/formatDate";
 
 export default async function Cards({ cards }: { cards: ICard[] }) {
+  console.log();
+
   return (
     <CardList>
       {cards.map((card) => (
@@ -29,7 +31,7 @@ export default async function Cards({ cards }: { cards: ICard[] }) {
           </Card.Content>
           <Card.Footer>
             <Card.DueDate>{formatDate(card.dueDate)}</Card.DueDate>
-            <Card.Asignee>{card.assignee.nickname[0]}</Card.Asignee>
+            <Card.Asignee>{card.assignee?.nickname[0]}</Card.Asignee>
           </Card.Footer>
         </Card>
       ))}

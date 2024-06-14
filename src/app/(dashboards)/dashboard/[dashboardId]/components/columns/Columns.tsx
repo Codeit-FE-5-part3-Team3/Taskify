@@ -1,8 +1,6 @@
-import Image from "next/image";
 import { serverSideFetcher } from "@/lib/utils";
 import { IColumn } from "@/type";
 import Column from "../column/Column";
-// import { ColumnCreateForm } from "@/components/column-create-form/ColumnCreateForm";
 import { AddColumnButton } from "../add-column-button/AddColumnButton";
 
 async function getColumns(dashboardId: number) {
