@@ -30,7 +30,7 @@ export default async function Column({ column }: { column: IColumn }) {
           <EditColumnButton title={column.title} columnId={column.id} />
         </ColumnHeader>
         <AddCardButton dashboardId={column.dashboardId} columnId={column.id} />
-        <Cards cards={columnData.cards} />
+        <Cards cards={columnData.cards} column={column} />
       </div>
     </>
   );

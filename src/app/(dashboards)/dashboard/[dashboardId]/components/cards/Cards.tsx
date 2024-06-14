@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ICard } from "@/type";
+import { ICard, IColumn } from "@/type";
 import {
   Card,
   CardList,
@@ -7,13 +7,19 @@ import {
 import CardTag from "../card-tag/CardTag";
 import formatDate from "@/util/formatDate";
 
-export default async function Cards({ cards }: { cards: ICard[] }) {
+export default async function Cards({
+  cards,
+  column,
+}: {
+  cards: ICard[];
+  column: IColumn;
+}) {
   console.log();
 
   return (
     <CardList>
       {cards.map((card) => (
-        <Card key={card.id}>
+        <Card key={card.id} cardData={card} column={column}>
           <Card.Header>
             {card.imageUrl && (
               <Image

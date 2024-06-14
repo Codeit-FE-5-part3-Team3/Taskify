@@ -1,19 +1,80 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { ICard, IColumn } from "@/type";
 import Image from "next/image";
+import CardTag from "../card-tag/CardTag";
+import { CommentForm } from "../comment-form/CommentForm";
+import CommentList from "../comment-list/CommentList";
 
 type CardProps = {
   children: React.ReactNode;
   style?: React.CSSProperties;
+  cardData?: ICard;
+  column?: IColumn;
 };
 
 export function CardList({ children }: CardProps) {
   return <div className="flex flex-col gap-4 overflow-auto">{children}</div>;
 }
 
-export function Card({ children }: CardProps) {
+export function Card({ children, cardData, column }: CardProps) {
+  if (!cardData || !column) return null;
   return (
-    <div className="flex flex-col w-[314px] h-full p-5 bg-white border-2 border-[#D9D9D9] rounded-md gap-2.5">
-      {children}
-    </div>
+    <Dialog>
+      <DialogTrigger asChild>
+        <div className="flex flex-col w-[314px] h-full p-5 bg-white border-2 border-[#D9D9D9] rounded-md gap-2.5">
+          {children}
+        </div>
+      </DialogTrigger>
+      <DialogContent className="gap-6">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold">
+            {cardData.title}
+          </DialogTitle>
+        </DialogHeader>
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-5 w-full">
+            <div className="w-fit h-fit shrink-0">
+              <div className="rounded-full bg-violet-50 w-fit h-fit px-2 py-1 gap-1.5 flex items-center ">
+                <div className="w-1.5 h-1.5 bg-violet-100 rounded-full"></div>
+                <span className="text-violet-100">{column.title}</span>
+              </div>
+            </div>
+
+            {cardData !== undefined && cardData.tags.length > 0 && (
+              <div className="flex">
+                <div className="w-5 h-8 border-l border-gray-300"></div>
+                <CardTag cards={cardData} />
+              </div>
+            )}
+          </div>
+          <span>{cardData?.description}</span>
+
+          {cardData.imageUrl && (
+            <div className="relative w-[450px] h-[263px]">
+              <Image
+                src={cardData.imageUrl}
+                alt={cardData.description}
+                fill
+                objectFit="contain"
+              />
+            </div>
+          )}
+        </div>
+
+        <CommentForm
+          cardId={cardData.id}
+          columnId={column.id}
+          dashboardId={column?.dashboardId}
+        />
+        <CommentList cardId={cardData.id} />
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -34,7 +95,9 @@ Card.Title = function CardTitle({ children }: CardProps) {
 };
 
 Card.Tag = function CardTag({ children }: CardProps) {
-  return <ul className="flex flex-row gap-2">{children}</ul>;
+  return (
+    <ul className="flex flex-row gap-2 flex-wrap items-center">{children}</ul>
+  );
 };
 
 Card.TagBackground = function CardTagBackground({
