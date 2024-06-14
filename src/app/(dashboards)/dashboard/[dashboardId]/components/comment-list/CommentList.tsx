@@ -1,10 +1,11 @@
 import { serverSideFetcher } from "@/lib/utils";
+import Comment from "./Comment";
 
 type Comment = {
   id: number;
   content: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   cardId: number;
   author: {
     profileImageUrl: string;
@@ -27,9 +28,7 @@ export default async function CommentList({ cardId }: { cardId: number }) {
     <ul className="flex flex-col gap-4 overflow-auto h-52">
       {comments.map((comment: Comment) => (
         <li key={comment.id}>
-          <div className="flex border border-gray-300 rounded p-4">
-            <span>{comment.content}</span>
-          </div>
+          <Comment comment={comment} />
         </li>
       ))}
     </ul>
