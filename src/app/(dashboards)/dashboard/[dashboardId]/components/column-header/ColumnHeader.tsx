@@ -8,7 +8,6 @@ export function ColumnHeader({ children }: ColumnProps) {
   return (
     <div className="flex justify-between items-center w-[314px]">
       {children}
-      <ColumnHeader.SettingLogo />
     </div>
   );
 }

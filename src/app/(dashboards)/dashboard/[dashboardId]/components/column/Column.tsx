@@ -2,7 +2,8 @@ import { serverSideFetcher } from "@/lib/utils";
 import { IColumn } from "@/type";
 import { ColumnHeader } from "@/app/(dashboards)/dashboard/[dashboardId]/components/column-header/ColumnHeader";
 import Cards from "../cards/Cards";
-import { AddCardButton } from "../add-card-button/AddCardButton";
+import AddCardButton from "../add-card-button/AddCardButton";
+import { EditColumnButton } from "../edit-column-buttom/EditColumnButton";
 
 async function getColumn(colunmId: number) {
   const response = await serverSideFetcher(
@@ -26,8 +27,9 @@ export default async function Column({ column }: { column: IColumn }) {
               {columnData.totalCount}
             </ColumnHeader.CardCount>
           </ColumnHeader.Content>
+          <EditColumnButton title={column.title} columnId={column.id} />
         </ColumnHeader>
-        <AddCardButton />
+        <AddCardButton dashboardId={column.dashboardId} columnId={column.id} />
         <Cards cards={columnData.cards} />
       </div>
     </>
