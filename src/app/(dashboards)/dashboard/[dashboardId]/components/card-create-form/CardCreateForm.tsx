@@ -64,37 +64,52 @@ export function CardCreateForm({ dashboardId, columnId }: CardCreateFormProps) {
   };
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    if (!image) return;
+    // if (!image) return;
 
-    const formData = new FormData();
-    formData.append("image", image);
-    formData.append("title", data.title);
-    formData.append("description", data.description);
+    // const formData = new FormData();
+    // formData.append("image", image);
+    // formData.append("title", data.title);
+    // formData.append("description", data.description);
 
-    const dueDateString = date
-      ? `${format(date, "yyyy-MM-dd", { locale: ko })} 00:00`
-      : undefined;
+    // const dueDateString = date
+    //   ? `${format(date, "yyyy-MM-dd", { locale: ko })} 00:00`
+    //   : undefined;
 
-    if (dueDateString) {
-      formData.append("dueDate", dueDateString);
-    }
+    // if (dueDateString) {
+    //   formData.append("dueDate", dueDateString);
+    // }
 
-    if (data.tags) {
-      formData.append("tags", JSON.stringify(data.tags));
-    }
+    // if (data.tags) {
+    //   formData.append("tags", JSON.stringify(data.tags));
+    // }
 
-    formData.append("dashboardId", dashboardId.toString());
-    formData.append("columnId", columnId.toString());
+    // formData.append("dashboardId", dashboardId.toString());
+    // formData.append("columnId", columnId.toString());
 
-    const response = await fetch("/api/cards", {
+    // const response = await fetch("/api/cards/image", {
+    //   method: "POST",
+    //   body: formData,
+    // });
+
+    // const imgData = await response.json();
+
+    const reqBody = {
+      dashboardId: dashboardId as neverumber,
+      columnId: Number(columnId),
+      title: data.title,
+      description: data.description,
+      tags: data.tags,
+      imageUrl:
+        "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/taskify/task_image/5-3_30146_1718346795616.jpeg",
+    };
+
+    const response2 = await fetch("/api/cards", {
       method: "POST",
-      body: formData,
+      body: JSON.stringify(reqBody),
     });
 
-    console.log(formData);
-
-    const d = await response.json();
-    if (response.ok) {
+    const d = await response2.json();
+    if (response2.ok) {
       revalidate();
     }
   }

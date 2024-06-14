@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
+import { CloudCog } from "lucide-react";
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -11,44 +12,19 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const formData = await req.formData();
-  const title = formData.get("title") as string;
-  const description = formData.get("description") as string;
-  const tags = formData.get("tags") as string; // this will be JSON string
-  const dashboardId = formData.get("dashboardId") as string;
-  const columnId = formData.get("columnId") as string;
-  const image = formData.get("image") as File;
+  const body = await req.json();
 
-  // Forward the formData including the image to the backend
-  const backendFormData = new FormData();
-  backendFormData.append("title", title);
-  backendFormData.append("description", description);
-  backendFormData.append("tags", tags);
-  backendFormData.append("dashboardId", dashboardId);
-  backendFormData.append("columnId", columnId);
-  backendFormData.append("image", image);
-
-  const response = await fetch(
-    `https://sp-taskify-api.vercel.app/5-3/columns/${columnId}/card-image`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${session.accessToken}`,
-      },
-      body: backendFormData,
+  // Send JSON data to the second endpoint
+  const response2 = await fetch(`https://sp-taskify-api.vercel.app/5-3/cards`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${session.accessToken}`,
     },
-  );
+    body: JSON.stringify(body),
+  });
 
-  if (!response.ok) {
-    return new Response(JSON.stringify({ message: "Failed to create card" }), {
-      status: response.status,
-    });
-  }
-
-  const data = await response.json();
-  console.log(data);
-
-  return new Response(JSON.stringify(data), {
-    status: response.status,
+  const data2 = await response2.json();
+  return new Response(JSON.stringify(data2), {
+    status: response2.status,
   });
 }
