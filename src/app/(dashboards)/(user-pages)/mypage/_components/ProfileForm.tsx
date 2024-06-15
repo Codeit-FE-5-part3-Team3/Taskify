@@ -22,9 +22,9 @@ export function ProfileForm({ control }: Props) {
       <h2 className="font-semibold text-[#333236] text-2xl ">프로필</h2>
       <div className="flex gap-4">
         <ProfileImage control={control} />
-        <div className="flex grow flex-col">
+        <div className="flex grow flex-col gap-3 justify-start">
           <EmailInput control={control} />
-          <div className="grow"></div>
+          {/* <div className="grow"></div> */}
           <NameInput control={control} />
         </div>
       </div>
