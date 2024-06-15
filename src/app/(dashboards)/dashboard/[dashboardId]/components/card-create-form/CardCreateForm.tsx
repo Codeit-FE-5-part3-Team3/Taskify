@@ -69,62 +69,56 @@ export function CardCreateForm({ dashboardId, columnId }: CardCreateFormProps) {
   };
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    if (!image) return;
-
     const formData = new FormData();
-    formData.append("image", image);
+    formData.append("dashboardId", dashboardId.toString());
+    formData.append("columnId", columnId.toString());
     formData.append("title", data.title);
     formData.append("description", data.description);
-
-    console.log("Original date:", date);
 
     const dueDateString = date
       ? `${format(date, "yyyy-MM-dd", { locale: ko })} 00:00`
       : undefined;
 
-    console.log("Due date string:", dueDateString);
-
     if (dueDateString) {
       formData.append("dueDate", dueDateString);
-    } else {
-      console.log("Due date is undefined or null");
     }
-
-    // if (dueDateString) {
-    //   formData.append("dueDate", dueDateString);
-    // }
 
     if (data.tags) {
       formData.append("tags", JSON.stringify(data.tags));
     }
 
-    formData.append("dashboardId", dashboardId.toString());
-    formData.append("columnId", columnId.toString());
+    if (image) {
+      formData.append("image", image);
+    }
 
-    const response = await fetch("/api/cards/image", {
+    const imageResponse = await fetch("/api/cards/image", {
       method: "POST",
       body: formData,
     });
 
-    const imgData = await response.json();
+    const imgData = await imageResponse.json();
 
-    const reqBody = {
+    const reqBody: Record<string, any> = {
       dashboardId: Number(dashboardId),
       columnId: Number(columnId),
       title: data.title,
       description: data.description,
-      dueDate: dueDateString,
+      // dueDate: dueDateString,
       tags: data.tags,
       imageUrl: imgData.imageUrl,
     };
 
-    const response2 = await fetch("/api/cards", {
+    if (dueDateString) {
+      reqBody.dueDate = dueDateString;
+    }
+
+    const cardResponse = await fetch("/api/cards", {
       method: "POST",
       body: JSON.stringify(reqBody),
     });
 
-    const d = await response2.json();
-    if (response2.ok) {
+    const d = await cardResponse.json();
+    if (cardResponse.ok) {
       revalidate();
     }
   }
@@ -246,11 +240,6 @@ export function CardCreateForm({ dashboardId, columnId }: CardCreateFormProps) {
               </FormItem>
             )}
           />
-
-          {/* <FormItem className="flex flex-col mt-4 mb-7">
-            <FormLabel className="text-lg font-medium">이미지</FormLabel>
-            <Input type="file" onChange={handleFileChange} />
-          </FormItem> */}
 
           <FormField
             control={form.control}

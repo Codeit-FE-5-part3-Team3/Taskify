@@ -30,8 +30,12 @@ export default async function Cards({ cards }: { cards: ICard[] }) {
             <CardTag cards={card} />
           </Card.Content>
           <Card.Footer>
-            <Card.DueDate>{formatDate(card.dueDate)}</Card.DueDate>
-            <Card.Asignee>{card.assignee?.nickname[0]}</Card.Asignee>
+            {card.dueDate && (
+              <Card.DueDate>{formatDate(card.dueDate)}</Card.DueDate>
+            )}
+            {card.assignee?.nickname && (
+              <Card.Asignee>{card.assignee.nickname[0]}</Card.Asignee>
+            )}
           </Card.Footer>
         </Card>
       ))}
