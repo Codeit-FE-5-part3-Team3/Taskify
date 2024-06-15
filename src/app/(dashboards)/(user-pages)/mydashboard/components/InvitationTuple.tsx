@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/components/ui/use-toast";
 import revalidate from "@/util/revalidate";
+import Image from "next/image";
 
 type invitation = {
   id: number;
@@ -96,7 +97,16 @@ export default function InvitationTuple({
             </button>
           </AlertDialogTrigger>
           <AlertDialogContent className="w-50">
-            초대를 수락하시겠습니까?
+            <div className="w-full flex flex-col items-center">
+              <Image
+                src={"/uncle-sam.png"}
+                alt={"uncle-sam"}
+                width={200}
+                height={200}
+                objectFit="contain"
+              />
+              초대를 수락하시겠습니까?
+            </div>
             <AlertDialogFooter>
               <AlertDialogCancel asChild>
                 <button
@@ -130,7 +140,16 @@ export default function InvitationTuple({
             </button>
           </AlertDialogTrigger>
           <AlertDialogContent className="w-50">
-            초대를 거절하시겠습니까?
+            <div className="w-full flex flex-col items-center">
+              <Image
+                src={"/uncle-sam.png"}
+                alt={"uncle-sam"}
+                width={200}
+                height={200}
+                objectFit="contain"
+              />
+              초대를 거절하시겠습니까?
+            </div>
             <AlertDialogFooter>
               <AlertDialogCancel asChild>
                 <button

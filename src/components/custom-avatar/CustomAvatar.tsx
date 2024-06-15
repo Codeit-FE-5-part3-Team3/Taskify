@@ -25,7 +25,7 @@ function getFirstCharacter(str: string) {
 }
 
 interface Props {
-  imgUrl: string;
+  imgUrl: string | undefined;
   nickname: string;
   userId: number;
   size: number;
