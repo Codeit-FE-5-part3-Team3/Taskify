@@ -93,7 +93,7 @@ export default function Jeb({ children, cardData, column, comments }) {
               {cardData.dueDate ? (
                 <div>{formatDate(cardData.dueDate)}</div>
               ) : (
-                <div> --.--.-- </div>
+                <div> -- . -- . -- </div>
               )}
             </div>
           </div>

@@ -21,7 +21,7 @@ export default async function Cards({
   column: IColumn;
 }) {
   return (
-    <div className="flex flex-col gap-4 overflow-auto scrollbar-hide">
+    <div className="flex flex-col gap-4 overflow-auto">
       {cards.map(async (card) => {
         const comments = await getComments(card.id);
 
@@ -48,8 +48,14 @@ export default async function Cards({
               <CardTag cards={card} />
             </Card.Content>
             <Card.Footer>
-              <Card.DueDate>{formatDate(card.dueDate)}</Card.DueDate>
-              <Card.Asignee>{card.assignee?.nickname[0]}</Card.Asignee>
+              {card.dueDate ? (
+                <Card.DueDate>{formatDate(card.dueDate)}</Card.DueDate>
+              ) : (
+                <Card.DueDate>-- . -- . --</Card.DueDate>
+              )}
+              {card.assignee?.nickname && (
+                <Card.Asignee assignee={card.assignee}></Card.Asignee>
+              )}
             </Card.Footer>
           </Card>
         );

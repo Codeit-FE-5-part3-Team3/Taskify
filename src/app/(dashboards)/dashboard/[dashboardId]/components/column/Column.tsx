@@ -18,7 +18,7 @@ export default async function Column({ column }: { column: IColumn }) {
 
   return (
     <>
-      <div key={column.id} className="flex flex-col gap-4 max-h-screen p-5">
+      <div key={column.id} className="flex flex-col gap-4 h-full p-5">
         <ColumnHeader>
           <ColumnHeader.Content>
             <ColumnHeader.Ellipse />

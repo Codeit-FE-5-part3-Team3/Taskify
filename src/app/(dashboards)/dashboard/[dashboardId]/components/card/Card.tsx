@@ -35,11 +35,7 @@ import { useState } from "react";
 import Jeb from "./Jeb";
 
 export function CardList({ children }: CardProps) {
-  return (
-    <div className="flex flex-col gap-4 overflow-auto scrollbar-hide">
-      {children}
-    </div>
-  );
+  return <div className="flex flex-col gap-4 overflow-auto">{children}</div>;
 }
 
 export function Card({ children, cardData, column, comments }: CardProps) {
@@ -49,87 +45,6 @@ export function Card({ children, cardData, column, comments }: CardProps) {
       <Jeb cardData={cardData} column={column} comments={comments}>
         {children}
       </Jeb>
-
-      {/* <Dialog>
-        <DialogTrigger asChild>
-          <div className="flex flex-col w-[314px] h-full p-5 bg-white border-2 border-[#D9D9D9] rounded-md gap-2.5">
-            {children}
-          </div>
-        </DialogTrigger>
-        <DialogContent className="gap-6 max-w-full w-fit">
-          <DialogHeader>
-            <div className="flex justify-between pr-4">
-              <DialogTitle className="text-2xl font-bold">
-                {cardData.title}
-              </DialogTitle>
-              <CardDropDown cardId={cardData.id} />
-            </div>
-          </DialogHeader>
-          <div className="flex gap-6 ">
-            <div className="flex flex-col gap-4">
-              <div className="flex gap-5 w-full">
-                <div className="w-fit h-fit shrink-0">
-                  <div className="rounded-full bg-violet-50 w-fit h-fit px-2 py-1 gap-1.5 flex items-center ">
-                    <div className="w-1.5 h-1.5 bg-violet-100 rounded-full"></div>
-                    <span className="text-violet-100">{column.title}</span>
-                  </div>
-                </div>
-
-                {cardData !== undefined && cardData.tags.length > 0 && (
-                  <div className="flex">
-                    <div className="w-5 h-8 border-l border-gray-300"></div>
-                    <CardTag cards={cardData} />
-                  </div>
-                )}
-              </div>
-              <span>{cardData?.description}</span>
-
-              {cardData.imageUrl && (
-                <div className="relative w-[450px] h-[263px]">
-                  <Image
-                    src={cardData.imageUrl}
-                    alt={cardData.description}
-                    fill
-                    objectFit="contain"
-                  />
-                </div>
-              )}
-              <CommentForm
-                cardId={cardData.id}
-                columnId={column.id}
-                dashboardId={column?.dashboardId}
-              />
-              <CommentList cardId={cardData.id} />
-            </div>
-            <div className="w-[200px] h-[155px] rounded-lg border border-gray-300 p-4 flex flex-col gap-2">
-              <span className="text-xs font-semibold">담당자</span>
-              {cardData.assignee ? (
-                <div className="flex gap-2 items-center">
-                  <Avatar>
-                    <CustomAvatar
-                      imgUrl={cardData.assignee.profileImageUrl}
-                      size={34}
-                      userId={cardData.assignee.id}
-                      nickname={cardData.assignee.nickname}
-                    />
-                  </Avatar>
-                  <span className="text-xm">{cardData.assignee.nickname}</span>
-                </div>
-              ) : (
-                <div className="text-gray-400">없음</div>
-              )}
-              <div className=" flex flex-col ">
-                <span className="text-xs font-semibold">마감일</span>
-                {cardData.dueDate ? (
-                  <div>{formatDate(cardData.dueDate)}</div>
-                ) : (
-                  <div> --.--.-- </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog> */}
     </>
   );
 }
@@ -182,10 +97,15 @@ Card.DueDate = function CardDueDate({ children }: CardProps) {
   );
 };
 
-Card.Asignee = function CardAsignee({ children }: CardProps) {
+Card.Asignee = function CardAsignee({ assignee }: { assignee: any }) {
   return (
-    <div className="flex justify-center items-center w-6 h-6 rounded-full bg-[#A3C4A2] text-white">
-      {children}
-    </div>
+    <Avatar>
+      <CustomAvatar
+        size={24}
+        nickname={assignee.nickname}
+        userId={assignee.id}
+        imgUrl={assignee.profileImageUrl}
+      />
+    </Avatar>
   );
 };

@@ -22,7 +22,7 @@ export default async function Columns({
   }
   return (
     <div className="w-full overflow-auto">
-      <ul className="flex bg-[#FAFAFA] overflow-auto">
+      <ul className="flex bg-[#FAFAFA] overflow-auto h-full">
         {columns.map((column: IColumn) => (
           <li
             key={column.id}
