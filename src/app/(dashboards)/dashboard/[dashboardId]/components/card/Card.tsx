@@ -1,19 +1,51 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { ICard, IColumn } from "@/type";
 import Image from "next/image";
+import CardTag from "../card-tag/CardTag";
+import { CommentForm } from "../comment-form/CommentForm";
+import CommentList from "../comment-list/CommentList";
+
+import CustomAvatar from "@/components/custom-avatar/CustomAvatar";
+import { Avatar } from "@/components/ui/avatar";
+import formatDate from "@/util/formatDate";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
 type CardProps = {
   children: React.ReactNode;
   style?: React.CSSProperties;
+  cardData?: ICard;
+  column?: IColumn;
+  comments?: any;
 };
+
+import CardDropDown from "./CardDropDown";
+import { useState } from "react";
+
+import Jeb from "./Jeb";
 
 export function CardList({ children }: CardProps) {
   return <div className="flex flex-col gap-4 overflow-auto">{children}</div>;
 }
 
-export function Card({ children }: CardProps) {
+export function Card({ children, cardData, column, comments }: CardProps) {
+  if (!cardData || !column) return null;
   return (
-    <div className="flex flex-col w-[314px] h-full p-5 bg-white border-2 border-[#D9D9D9] rounded-md gap-2.5">
-      {children}
-    </div>
+    <>
+      <Jeb cardData={cardData} column={column} comments={comments}>
+        {children}
+      </Jeb>
+    </>
   );
 }
 
@@ -34,7 +66,9 @@ Card.Title = function CardTitle({ children }: CardProps) {
 };
 
 Card.Tag = function CardTag({ children }: CardProps) {
-  return <ul className="flex flex-row gap-2">{children}</ul>;
+  return (
+    <ul className="flex flex-row gap-2 flex-wrap items-center">{children}</ul>
+  );
 };
 
 Card.TagBackground = function CardTagBackground({
@@ -63,10 +97,15 @@ Card.DueDate = function CardDueDate({ children }: CardProps) {
   );
 };
 
-Card.Asignee = function CardAsignee({ children }: CardProps) {
+Card.Asignee = function CardAsignee({ assignee }: { assignee: any }) {
   return (
-    <div className="flex justify-center items-center w-6 h-6 rounded-full bg-[#A3C4A2] text-white">
-      {children}
-    </div>
+    <Avatar>
+      <CustomAvatar
+        size={24}
+        nickname={assignee.nickname}
+        userId={assignee.id}
+        imgUrl={assignee.profileImageUrl}
+      />
+    </Avatar>
   );
 };

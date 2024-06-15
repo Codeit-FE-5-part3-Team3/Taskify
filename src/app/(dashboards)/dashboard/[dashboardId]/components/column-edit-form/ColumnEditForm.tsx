@@ -33,6 +33,9 @@ export function ColumnEditForm({
 }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: title,
+    },
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
@@ -66,7 +69,7 @@ export function ColumnEditForm({
                 <FormControl>
                   <input
                     id="title"
-                    placeholder={String(title)}
+                    placeholder="칼럼 제목을 입력해주세요"
                     {...field}
                     className="px-4 py-3.5 outline-none border border-[#d9d9d9] rounded-lg"
                   />

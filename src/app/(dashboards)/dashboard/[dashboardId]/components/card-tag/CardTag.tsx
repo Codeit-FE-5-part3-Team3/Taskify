@@ -6,7 +6,7 @@ import {
   generateFixedColors,
 } from "@/util/randomColor";
 
-export default async function CardTag({ cards }: { cards: ICard }) {
+export default function CardTag({ cards }: { cards: ICard }) {
   return (
     <Card.Tag>
       {cards.tags.map((item, index) => (

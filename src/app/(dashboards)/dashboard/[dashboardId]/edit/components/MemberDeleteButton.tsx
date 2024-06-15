@@ -11,6 +11,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import revalidate from "@/util/revalidate";
 import { useState } from "react";
+import Image from "next/image";
 
 interface Props {
   nickname: string;
@@ -59,10 +60,21 @@ export default function MemberDeleteButton({ nickname, memberId }: Props) {
         </button>
       </AlertDialogTrigger>
       <AlertDialogContent className="w-50">
-        <span>
-          {nickname}님을{" "}
-          <b className="text-red-500">지구밖으로 영원히 추방시키시겠습니까?</b>
-        </span>
+        <div className="flex flex-col items-center">
+          <Image
+            src={"/dontgo.png"}
+            alt={"interstellar"}
+            width={500}
+            height={200}
+            objectFit="contain"
+          />
+          <span>
+            {nickname}님을{" "}
+            <b className="text-red-500">
+              지구밖으로 영원히 추방시키시겠습니까?
+            </b>
+          </span>
+        </div>
         <AlertDialogFooter className="sm:justify-center">
           <AlertDialogCancel asChild>
             <button className="px-[46px] py-3.5 border rounded-lg border-[#d9d9d9]">

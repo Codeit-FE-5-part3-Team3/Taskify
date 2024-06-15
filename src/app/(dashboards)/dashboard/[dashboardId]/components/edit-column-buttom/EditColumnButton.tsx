@@ -13,11 +13,13 @@ import {
 import { ColumnEditForm } from "../column-edit-form/ColumnEditForm";
 
 import { useState } from "react";
-import { DeleteColumnButton } from "../delete-column-button/DeleteColumnButton";
+import revalidate from "@/util/revalidate";
 import {
   AlertDialogAction,
   AlertDialogCancel,
 } from "@radix-ui/react-alert-dialog";
+import { useToast } from "@/components/ui/use-toast";
+import DeleteColumnModal from "../delete-column-modal/DeleteColumnModal";
 
 type EditColumnButtonProps = {
   columnId: number;
@@ -27,10 +29,32 @@ type EditColumnButtonProps = {
 export function EditColumnButton({ columnId, title }: EditColumnButtonProps) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { toast } = useToast();
 
-  const handleDelClick = () => {
+  const handleDeleteModalOpen = () => {
     setIsDeleteModalOpen(true);
     setIsEditModalOpen(false);
+  };
+
+  const handleDelete = async () => {
+    const response = await fetch(`/api/columns/${columnId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      toast({
+        description: "어라라",
+      });
+    } else {
+      toast({
+        description: `${title} 칼럼을 흔적도 없이 지워버렸습니다`,
+      });
+      revalidate();
+    }
+
+    setIsDeleteModalOpen(false);
   };
 
   return (
@@ -52,11 +76,11 @@ export function EditColumnButton({ columnId, title }: EditColumnButtonProps) {
           <ColumnEditForm columnId={columnId} title={title}>
             <Button
               variant="ghost"
-              className="p-0"
-              onClick={handleDelClick}
+              className="p-0 flex h-fit self-end"
+              onClick={handleDeleteModalOpen}
               type="button"
             >
-              <span className="text-gray-300">삭제하기</span>
+              <span className="text-gray-400 underline">삭제하기</span>
             </Button>
           </ColumnEditForm>
         </AlertDialogContent>
@@ -64,15 +88,11 @@ export function EditColumnButton({ columnId, title }: EditColumnButtonProps) {
 
       <AlertDialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
         <AlertDialogContent className="p-7">
-          <AlertDialogHeader>
-            <AlertDialogTitle>너 정말로 삭제할거니?</AlertDialogTitle>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setIsDeleteModalOpen(false)}>
-              취소
-            </AlertDialogCancel>
-            <AlertDialogAction>삭제</AlertDialogAction>
-          </AlertDialogFooter>
+          <DeleteColumnModal
+            title={title}
+            onCancel={() => setIsDeleteModalOpen(false)}
+            onDelete={handleDelete}
+          />
         </AlertDialogContent>
       </AlertDialog>
     </>
