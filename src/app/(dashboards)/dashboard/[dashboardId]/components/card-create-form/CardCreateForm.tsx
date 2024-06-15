@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import * as React from "react";
+import { useState } from "react";
 import revalidate from "@/util/revalidate";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
@@ -11,7 +13,7 @@ import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { TagsInput } from "react-tag-input-component";
 import {
   Form,
   FormField,
@@ -30,50 +32,74 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { TagsInput } from "react-tag-input-component";
+import { Input } from "@/components/ui/input";
+import { useRef } from "react";
+import { Member } from "@/type";
 
 type CardCreateFormProps = {
   dashboardId: number;
   columnId: number;
+  members?: Member[];
 };
 
 const formSchema = z.object({
+  assignee: z.number().optional(),
   title: z.string().min(1),
   description: z.string().min(1),
   tags: z.array(z.string()).optional(),
+  dueDate: z.date().optional(),
   imageUrl: z.string().optional(),
 });
 
-export function CardCreateForm({ dashboardId, columnId }: CardCreateFormProps) {
+export function CardCreateForm({
+  dashboardId,
+  columnId,
+  members,
+}: CardCreateFormProps) {
   const [date, setDate] = React.useState<Date | undefined>();
   const [image, setImage] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState("/add_box_large.svg");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      assignee: undefined,
       tags: [],
+      imageUrl: undefined,
     },
   });
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
-      // form.setValue('imgUrl', URL.createObjectURL(selectedFile))
       setImage(selectedFile);
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageUrl(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
     }
   };
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    if (!image) return;
-
     const formData = new FormData();
-    formData.append("image", image);
+    formData.append("dashboardId", dashboardId.toString());
+    formData.append("columnId", columnId.toString());
     formData.append("title", data.title);
     formData.append("description", data.description);
 
     const dueDateString = date
       ? `${format(date, "yyyy-MM-dd", { locale: ko })} 00:00`
       : undefined;
+
+    let assignedMember;
+    if (data.assignee !== undefined) {
+      assignedMember = members?.filter(
+        (member) => member.userId === data.assignee,
+      );
+    }
 
     if (dueDateString) {
       formData.append("dueDate", dueDateString);
@@ -83,156 +109,217 @@ export function CardCreateForm({ dashboardId, columnId }: CardCreateFormProps) {
       formData.append("tags", JSON.stringify(data.tags));
     }
 
-    formData.append("dashboardId", dashboardId.toString());
-    formData.append("columnId", columnId.toString());
+    if (image) {
+      formData.append("image", image);
+    }
 
-    const response = await fetch("/api/cards", {
+    const imageResponse = await fetch("/api/cards/image", {
       method: "POST",
       body: formData,
     });
 
-    console.log(formData);
+    const imgData = await imageResponse.json();
 
-    const d = await response.json();
-    if (response.ok) {
+    const reqBody: Record<string, any> = {
+      dashboardId: Number(dashboardId),
+      columnId: Number(columnId),
+      assigneeUserId: data.assignee,
+      title: data.title,
+      description: data.description,
+      tags: data.tags,
+      imageUrl: imgData.imageUrl,
+    };
+
+    if (dueDateString) {
+      reqBody.dueDate = dueDateString;
+    }
+
+    const cardResponse = await fetch("/api/cards", {
+      method: "POST",
+      body: JSON.stringify(reqBody),
+    });
+
+    const d = await cardResponse.json();
+    if (cardResponse.ok) {
       revalidate();
     }
   }
 
   return (
-    <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          {/* <FormField
-              control={form.control}
-              name="asigneeId"
-              render={({ field }) => (
-                <FormItem className="flex flex-col mt-4 mb-7">
-                  <FormLabel className="text-lg font-medium">담당자</FormLabel>
-                  <FormControl>
-                    <select
-                      {...field}
-                      className="px-4 py-3.5 outline-none border border-[#d9d9d9] rounded-lg"
-                    >
-                      <option disabled hidden selected>
-                        플레이스홀더
-                      </option>
-                      <option value="옵션1">옵션1</option>
-                      <option value="옵션2">옵션2</option>
-                    </select>
-                  </FormControl>
-                </FormItem>
-              )}
-            /> */}
-
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem className="flex flex-col mt-4 mb-7">
-                <FormLabel className="text-lg font-medium">제목 *</FormLabel>
-                <FormControl>
-                  <input
-                    placeholder="제목을 입력해주세요"
-                    {...field}
-                    className="px-4 py-3.5 outline-none border border-[#d9d9d9] rounded-lg"
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem className="flex flex-col mt-4 mb-7">
-                <FormLabel className="text-lg font-medium">설명 *</FormLabel>
-                <FormControl>
-                  <textarea
-                    placeholder="설명을 입력해주세요"
-                    {...field}
-                    className="px-4 py-3.5 outline-none border border-[#d9d9d9] rounded-lg"
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-
-          <FormItem className="flex flex-col mt-4 mb-7">
-            <FormLabel className="text-lg font-medium">마감일</FormLabel>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "w-full justify-start text-left font-normal",
-                    !date && "text-muted-foreground",
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {date ? (
-                    format(date, "PPP", { locale: ko })
-                  ) : (
-                    <span>날짜를 입력해주세요</span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={(selectedDate) => {
-                    setDate(selectedDate || undefined);
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="assignee"
+          render={({ field }) => (
+            <FormItem className="flex flex-col mt-4 mb-7">
+              <FormLabel className="text-lg font-medium">담당자</FormLabel>
+              <FormControl>
+                <select
+                  {...field}
+                  className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onChange={(e) => {
+                    const value = e.target.value
+                      ? Number(e.target.value)
+                      : undefined;
+                    field.onChange(value);
                   }}
-                  initialFocus
-                  locale={ko}
+                  defaultValue={field.value || ""}
+                >
+                  <option value="">선택해주세요</option>
+                  {members?.map((item) => (
+                    <option key={item.id} value={item.userId}>
+                      {item.nickname}
+                    </option>
+                  ))}
+                </select>
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem className="flex flex-col mt-4 mb-7">
+              <FormLabel className="text-lg font-medium">제목 *</FormLabel>
+              <FormControl>
+                <input
+                  placeholder="제목을 입력해주세요"
+                  {...field}
+                  className="px-4 py-3.5 outline-none border border-[#d9d9d9] rounded-lg"
                 />
-              </PopoverContent>
-            </Popover>
-          </FormItem>
+              </FormControl>
+            </FormItem>
+          )}
+        />
 
-          <FormField
-            control={form.control}
-            name="tags"
-            render={({ field }) => (
-              <FormItem className="flex flex-col mt-4 mb-7">
-                <FormLabel className="text-lg font-medium">태그</FormLabel>
-                <FormControl>
-                  <TagsInput
-                    value={field.value}
-                    onChange={field.onChange}
-                    name="tags"
-                    placeHolder="입력 후 Enter"
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem className="flex flex-col mt-4 mb-7">
+              <FormLabel className="text-lg font-medium">설명 *</FormLabel>
+              <FormControl>
+                <textarea
+                  placeholder="설명을 입력해주세요"
+                  {...field}
+                  className="px-4 py-3.5 outline-none border border-[#d9d9d9] rounded-lg"
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="dueDate"
+          render={({ field }) => (
+            <FormItem className="flex flex-col mt-4 mb-7">
+              <FormLabel className="text-lg font-medium">마감일</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-full justify-start text-left font-normal px-4 py-3.5",
+                      !date && "text-muted-foreground",
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {date ? (
+                      format(date, "PPP", { locale: ko })
+                    ) : (
+                      <span>날짜를 입력해주세요</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={(selectedDate) => {
+                      setDate(selectedDate || undefined);
+                    }}
+                    initialFocus
+                    locale={ko}
+                    {...field}
                   />
+                </PopoverContent>
+              </Popover>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="tags"
+          render={({ field }) => (
+            <FormItem className="flex flex-col mt-4 mb-7">
+              <FormLabel className="text-lg font-medium">태그</FormLabel>
+              <FormControl>
+                <TagsInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  name="tags"
+                  placeHolder="입력 후 Enter"
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="imageUrl"
+          render={({ field }) => {
+            return (
+              <FormItem className="flex flex-col mt-4 mb-7">
+                <FormLabel className="text-lg font-medium">이미지</FormLabel>
+                <FormControl>
+                  <div
+                    role="button"
+                    className="group relative aspect-square size-[76px] min-w-[76px] cursor-pointer overflow-hidden rounded-md"
+                    onClick={() => {
+                      fileRef.current?.click();
+                    }}
+                  >
+                    <Image
+                      className="size-full object-cover"
+                      src={imageUrl}
+                      unoptimized
+                      alt="Profile"
+                      width={76}
+                      height={76}
+                    />
+                    <div className="absolute inset-0 hidden size-full bg-black/20 group-hover:block" />
+                    <Input
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      ref={fileRef}
+                    />
+                  </div>
                 </FormControl>
               </FormItem>
-            )}
-          />
+            );
+          }}
+        />
 
-          <FormItem className="flex flex-col mt-4 mb-7">
-            <FormLabel className="text-lg font-medium">이미지</FormLabel>
-            <input
-              type="file"
-              onChange={handleFileChange}
-              className="px-4 py-3.5 outline-none border border-[#d9d9d9] rounded-lg "
-            />
-          </FormItem>
-
-          <AlertDialogFooter>
-            <AlertDialogCancel className="px-[46px] py-3.5 border rounded-lg border-[#d9d9d9]">
-              취소
-            </AlertDialogCancel>
-            <AlertDialogAction
-              type="submit"
-              disabled={!form.formState.isValid}
-              className="bg-[#5534da] text-white px-[46px] py-3.5 rounded-lg hover:bg-[#4524ca]"
-            >
-              생성
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </form>
-      </Form>
-    </>
+        <AlertDialogFooter>
+          <AlertDialogCancel className="px-[46px] py-3.5 border rounded-lg border-[#d9d9d9]">
+            취소
+          </AlertDialogCancel>
+          <AlertDialogAction
+            type="submit"
+            disabled={!form.formState.isValid}
+            className="bg-[#5534da] text-white px-[46px] py-3.5 rounded-lg hover:bg-[#4524ca]"
+          >
+            생성
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </form>
+    </Form>
   );
 }
