@@ -1,4 +1,3 @@
-import { serverSideFetcher } from "@/lib/utils";
 import Comment from "./Comment";
 
 type CommentT = {
@@ -14,16 +13,7 @@ type CommentT = {
   };
 };
 
-async function getComments(cardID: number) {
-  const res = await serverSideFetcher(
-    `https://sp-taskify-api.vercel.app/5-3/comments?cardId=${cardID}`,
-  );
-  const data = await res?.json();
-  return data.comments;
-}
-
-export default async function CommentList({ cardId }: { cardId: number }) {
-  const comments = await getComments(cardId);
+export default function CommentList({ comments }: { comments: any }) {
   return (
     <>
       {comments.length > 0 ? (
