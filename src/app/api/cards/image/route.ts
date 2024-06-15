@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
   const dashboardId = formData.get("dashboardId") as string;
   const columnId = formData.get("columnId") as string;
   const image = formData.get("image") as File;
+  const assignee = formData.get("assignee") as string;
 
   // Create FormData and append data
   const backendFormData = new FormData();
@@ -27,6 +28,7 @@ export async function POST(req: NextRequest) {
   backendFormData.append("dashboardId", dashboardId);
   backendFormData.append("columnId", columnId);
   backendFormData.append("image", image);
+  backendFormData.append("assignee", assignee);
 
   // Send FormData with image to the first endpoint
   const response = await fetch(

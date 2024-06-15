@@ -13,6 +13,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
+  console.log(body);
 
   // Send JSON data to the second endpoint
   const response2 = await fetch(`https://sp-taskify-api.vercel.app/5-3/cards`, {

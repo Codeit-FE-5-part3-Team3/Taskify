@@ -63,6 +63,7 @@ export function CardCreateForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      assignee: undefined,
       tags: [],
       imageUrl: undefined,
     },
@@ -93,8 +94,11 @@ export function CardCreateForm({
       ? `${format(date, "yyyy-MM-dd", { locale: ko })} 00:00`
       : undefined;
 
-    if (data.assignee) {
-      formData.append("assignee", data.assignee.toString());
+    let assignedMember;
+    if (data.assignee !== undefined) {
+      assignedMember = members?.filter(
+        (member) => member.userId === data.assignee,
+      );
     }
 
     if (dueDateString) {
@@ -119,7 +123,7 @@ export function CardCreateForm({
     const reqBody: Record<string, any> = {
       dashboardId: Number(dashboardId),
       columnId: Number(columnId),
-      asignee: data.assignee,
+      assigneeUserId: data.assignee,
       title: data.title,
       description: data.description,
       tags: data.tags,
@@ -154,8 +158,15 @@ export function CardCreateForm({
                 <select
                   {...field}
                   className="w-full rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  onChange={(e) => {
+                    const value = e.target.value
+                      ? Number(e.target.value)
+                      : undefined;
+                    field.onChange(value);
+                  }}
+                  defaultValue={field.value || ""}
                 >
+                  <option value="">선택해주세요</option>
                   {members?.map((item) => (
                     <option key={item.id} value={item.userId}>
                       {item.nickname}
