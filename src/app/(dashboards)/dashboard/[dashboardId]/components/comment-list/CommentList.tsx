@@ -25,12 +25,19 @@ async function getComments(cardID: number) {
 export default async function CommentList({ cardId }: { cardId: number }) {
   const comments = await getComments(cardId);
   return (
-    <ul className="flex flex-col gap-4 overflow-auto h-52">
-      {comments.map((comment: CommentT) => (
-        <li key={comment.id}>
-          <Comment comment={comment} />
-        </li>
-      ))}
-    </ul>
+    <>
+      {comments.length > 0 ? (
+        <span>{comments.length} 개의 댓글</span>
+      ) : (
+        <span>아직 댓글이 없습니다</span>
+      )}
+      <ul className="flex flex-col gap-4 overflow-auto h-52">
+        {comments.map((comment: CommentT) => (
+          <li key={comment.id}>
+            <Comment comment={comment} />
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }

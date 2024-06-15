@@ -59,7 +59,7 @@ export function CommentForm({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full space-y-6 relative"
+          className="w-full space-y-6 relative min-w-[450px] shrink-0"
         >
           <FormField
             control={form.control}

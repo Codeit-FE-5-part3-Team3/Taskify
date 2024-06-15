@@ -10,6 +10,10 @@ import Image from "next/image";
 import CardTag from "../card-tag/CardTag";
 import { CommentForm } from "../comment-form/CommentForm";
 import CommentList from "../comment-list/CommentList";
+import { Divide } from "lucide-react";
+import CustomAvatar from "@/components/custom-avatar/CustomAvatar";
+import { Avatar } from "@/components/ui/avatar";
+import formatDate from "@/util/formatDate";
 
 type CardProps = {
   children: React.ReactNode;
@@ -35,48 +39,75 @@ export function Card({ children, cardData, column }: CardProps) {
           {children}
         </div>
       </DialogTrigger>
-      <DialogContent className="gap-6">
+      <DialogContent className="gap-6 max-w-full w-fit">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">
             {cardData.title}
           </DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col gap-4">
-          <div className="flex gap-5 w-full">
-            <div className="w-fit h-fit shrink-0">
-              <div className="rounded-full bg-violet-50 w-fit h-fit px-2 py-1 gap-1.5 flex items-center ">
-                <div className="w-1.5 h-1.5 bg-violet-100 rounded-full"></div>
-                <span className="text-violet-100">{column.title}</span>
+        <div className="flex gap-6 ">
+          <div className="flex flex-col gap-4">
+            <div className="flex gap-5 w-full">
+              <div className="w-fit h-fit shrink-0">
+                <div className="rounded-full bg-violet-50 w-fit h-fit px-2 py-1 gap-1.5 flex items-center ">
+                  <div className="w-1.5 h-1.5 bg-violet-100 rounded-full"></div>
+                  <span className="text-violet-100">{column.title}</span>
+                </div>
               </div>
-            </div>
 
-            {cardData !== undefined && cardData.tags.length > 0 && (
-              <div className="flex">
-                <div className="w-5 h-8 border-l border-gray-300"></div>
-                <CardTag cards={cardData} />
+              {cardData !== undefined && cardData.tags.length > 0 && (
+                <div className="flex">
+                  <div className="w-5 h-8 border-l border-gray-300"></div>
+                  <CardTag cards={cardData} />
+                </div>
+              )}
+            </div>
+            <span>{cardData?.description}</span>
+
+            {cardData.imageUrl && (
+              <div className="relative w-[450px] h-[263px]">
+                <Image
+                  src={cardData.imageUrl}
+                  alt={cardData.description}
+                  fill
+                  objectFit="contain"
+                />
               </div>
             )}
+            <CommentForm
+              cardId={cardData.id}
+              columnId={column.id}
+              dashboardId={column?.dashboardId}
+            />
+            <CommentList cardId={cardData.id} />
           </div>
-          <span>{cardData?.description}</span>
-
-          {cardData.imageUrl && (
-            <div className="relative w-[450px] h-[263px]">
-              <Image
-                src={cardData.imageUrl}
-                alt={cardData.description}
-                fill
-                objectFit="contain"
-              />
+          <div className="w-[200px] h-[155px] rounded-lg border border-gray-300 p-4 flex flex-col gap-2">
+            <span className="text-xs font-semibold">담당자</span>
+            {cardData.assignee ? (
+              <div className="flex gap-2 items-center">
+                <Avatar>
+                  <CustomAvatar
+                    imgUrl={cardData.assignee.profileImageUrl}
+                    size={34}
+                    userId={cardData.assignee.id}
+                    nickname={cardData.assignee.nickname}
+                  />
+                </Avatar>
+                <span className="text-xm">{cardData.assignee.nickname}</span>
+              </div>
+            ) : (
+              <div className="text-gray-400">없음</div>
+            )}
+            <div className=" flex flex-col ">
+              <span className="text-xs font-semibold">마감일</span>
+              {cardData.dueDate ? (
+                <div>{formatDate(cardData.dueDate)}</div>
+              ) : (
+                <div> --.--.-- </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
-
-        <CommentForm
-          cardId={cardData.id}
-          columnId={column.id}
-          dashboardId={column?.dashboardId}
-        />
-        <CommentList cardId={cardData.id} />
       </DialogContent>
     </Dialog>
   );
