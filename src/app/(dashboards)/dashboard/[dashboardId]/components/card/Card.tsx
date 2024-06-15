@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ICard, IColumn } from "@/type";
+import { ICard, IColumn, Member } from "@/type";
 import Image from "next/image";
 import CardTag from "../card-tag/CardTag";
 import { CommentForm } from "../comment-form/CommentForm";
@@ -27,6 +27,7 @@ type CardProps = {
   cardData?: ICard;
   column?: IColumn;
   comments?: any;
+  members?: Member[];
 };
 
 import CardDropDown from "./CardDropDown";
@@ -38,11 +39,22 @@ export function CardList({ children }: CardProps) {
   return <div className="flex flex-col gap-4 overflow-auto">{children}</div>;
 }
 
-export function Card({ children, cardData, column, comments }: CardProps) {
-  if (!cardData || !column) return null;
+export function Card({
+  children,
+  cardData,
+  column,
+  comments,
+  members,
+}: CardProps) {
+  if (!cardData || !column || !members) return null;
   return (
     <>
-      <Jeb cardData={cardData} column={column} comments={comments}>
+      <Jeb
+        cardData={cardData}
+        column={column}
+        comments={comments}
+        members={members}
+      >
         {children}
       </Jeb>
     </>

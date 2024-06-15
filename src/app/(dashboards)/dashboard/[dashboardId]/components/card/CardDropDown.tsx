@@ -24,9 +24,11 @@ import { AlertDialogAction } from "@radix-ui/react-alert-dialog";
 export default function CardDropDown({
   cardId,
   setter,
+  editsetter,
 }: {
   cardId: number;
   setter: any;
+  editsetter: any;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDelOpen, setIsDelOpen] = useState(false);
@@ -61,6 +63,13 @@ export default function CardDropDown({
     setIsDelOpen(false);
   };
 
+  const onEditClick = () => {
+    setIsOpen(false);
+    setIsDelOpen(false);
+    setter(false);
+    editsetter(true);
+  };
+
   return (
     <>
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
@@ -70,6 +79,7 @@ export default function CardDropDown({
         <DropdownMenuContent>
           <DropdownMenuItem
             className={cn("focus:bg-[#f1effd] focus:text-[#5534da]")}
+            onClick={onEditClick}
           >
             수정하기
           </DropdownMenuItem>

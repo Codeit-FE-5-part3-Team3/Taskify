@@ -13,6 +13,14 @@ async function getComments(cardID: number) {
   return data.comments;
 }
 
+async function getMembers(dashboardId: number) {
+  const res = await serverSideFetcher(
+    `https://sp-taskify-api.vercel.app/5-3/members?page=1&size=9999&dashboardId=${dashboardId}`,
+  );
+  const data = await res?.json();
+  return data.members;
+}
+
 export default async function Cards({
   cards,
   column,
@@ -20,6 +28,8 @@ export default async function Cards({
   cards: ICard[];
   column: IColumn;
 }) {
+  const members = await getMembers(column.dashboardId);
+
   return (
     <div className="flex flex-col gap-4 overflow-auto">
       {cards.map(async (card) => {
@@ -31,6 +41,7 @@ export default async function Cards({
             cardData={card}
             column={column}
             comments={comments}
+            members={members}
           >
             <Card.Header>
               {card.imageUrl && (
