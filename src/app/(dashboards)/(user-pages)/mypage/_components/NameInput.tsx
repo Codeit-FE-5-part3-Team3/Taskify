@@ -3,6 +3,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
@@ -27,6 +28,7 @@ export function NameInput({ control }: Props) {
                 className="text-md h-12 font-normal focus:outline-none focus:border-[#5534DA]"
               />
             </FormControl>
+            <FormMessage />
           </FormItem>
         );
       }}
