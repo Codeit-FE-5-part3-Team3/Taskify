@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { useState } from "react";
+import Image from "next/image";
 import revalidate from "@/util/revalidate";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
@@ -11,7 +13,7 @@ import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { TagsInput } from "react-tag-input-component";
 import {
   Form,
   FormField,
@@ -30,7 +32,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { TagsInput } from "react-tag-input-component";
+import { Input } from "@/components/ui/input";
+import { useRef } from "react";
 
 type CardCreateFormProps = {
   dashboardId: number;
@@ -41,6 +44,7 @@ const formSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
   tags: z.array(z.string()).optional(),
+  dueDate: z.date().optional(),
   imageUrl: z.string().optional(),
 });
 
@@ -52,13 +56,14 @@ export function CardCreateForm({ dashboardId, columnId }: CardCreateFormProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       tags: [],
+      imageUrl: undefined,
     },
   });
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
-      // form.setValue('imgUrl', URL.createObjectURL(selectedFile))
       setImage(selectedFile);
     }
   };
@@ -71,13 +76,23 @@ export function CardCreateForm({ dashboardId, columnId }: CardCreateFormProps) {
     formData.append("title", data.title);
     formData.append("description", data.description);
 
+    console.log("Original date:", date);
+
     const dueDateString = date
       ? `${format(date, "yyyy-MM-dd", { locale: ko })} 00:00`
       : undefined;
 
+    console.log("Due date string:", dueDateString);
+
     if (dueDateString) {
       formData.append("dueDate", dueDateString);
+    } else {
+      console.log("Due date is undefined or null");
     }
+
+    // if (dueDateString) {
+    //   formData.append("dueDate", dueDateString);
+    // }
 
     if (data.tags) {
       formData.append("tags", JSON.stringify(data.tags));
@@ -98,6 +113,7 @@ export function CardCreateForm({ dashboardId, columnId }: CardCreateFormProps) {
       columnId: Number(columnId),
       title: data.title,
       description: data.description,
+      dueDate: dueDateString,
       tags: data.tags,
       imageUrl: imgData.imageUrl,
     };
@@ -118,26 +134,26 @@ export function CardCreateForm({ dashboardId, columnId }: CardCreateFormProps) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           {/* <FormField
-              control={form.control}
-              name="asigneeId"
-              render={({ field }) => (
-                <FormItem className="flex flex-col mt-4 mb-7">
-                  <FormLabel className="text-lg font-medium">담당자</FormLabel>
-                  <FormControl>
-                    <select
-                      {...field}
-                      className="px-4 py-3.5 outline-none border border-[#d9d9d9] rounded-lg"
-                    >
-                      <option disabled hidden selected>
-                        플레이스홀더
-                      </option>
-                      <option value="옵션1">옵션1</option>
-                      <option value="옵션2">옵션2</option>
-                    </select>
-                  </FormControl>
-                </FormItem>
-              )}
-            /> */}
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem className="flex flex-col mt-4 mb-7">
+                <FormLabel className="text-lg font-medium">담당자</FormLabel>
+                <FormControl>
+                  <select
+                    {...field}
+                    className="px-4 py-3.5 outline-none border border-[#d9d9d9] rounded-lg"
+                  >
+                    <option disabled hidden selected>
+                      플레이스홀더
+                    </option>
+                    <option value="옵션1">옵션1</option>
+                    <option value="옵션2">옵션2</option>
+                  </select>
+                </FormControl>
+              </FormItem>
+            )}
+          /> */}
 
           <FormField
             control={form.control}
@@ -173,38 +189,45 @@ export function CardCreateForm({ dashboardId, columnId }: CardCreateFormProps) {
             )}
           />
 
-          <FormItem className="flex flex-col mt-4 mb-7">
-            <FormLabel className="text-lg font-medium">마감일</FormLabel>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "w-full justify-start text-left font-normal",
-                    !date && "text-muted-foreground",
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {date ? (
-                    format(date, "PPP", { locale: ko })
-                  ) : (
-                    <span>날짜를 입력해주세요</span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={(selectedDate) => {
-                    setDate(selectedDate || undefined);
-                  }}
-                  initialFocus
-                  locale={ko}
-                />
-              </PopoverContent>
-            </Popover>
-          </FormItem>
+          <FormField
+            control={form.control}
+            name="dueDate"
+            render={({ field }) => (
+              <FormItem className="flex flex-col mt-4 mb-7">
+                <FormLabel className="text-lg font-medium">마감일</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !date && "text-muted-foreground",
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {date ? (
+                        format(date, "PPP", { locale: ko })
+                      ) : (
+                        <span>날짜를 입력해주세요</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={date}
+                      onSelect={(selectedDate) => {
+                        setDate(selectedDate || undefined);
+                      }}
+                      initialFocus
+                      locale={ko}
+                      {...field}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </FormItem>
+            )}
+          />
 
           <FormField
             control={form.control}
@@ -224,14 +247,49 @@ export function CardCreateForm({ dashboardId, columnId }: CardCreateFormProps) {
             )}
           />
 
-          <FormItem className="flex flex-col mt-4 mb-7">
+          {/* <FormItem className="flex flex-col mt-4 mb-7">
             <FormLabel className="text-lg font-medium">이미지</FormLabel>
-            <input
-              type="file"
-              onChange={handleFileChange}
-              className="px-4 py-3.5 outline-none border border-[#d9d9d9] rounded-lg "
-            />
-          </FormItem>
+            <Input type="file" onChange={handleFileChange} />
+          </FormItem> */}
+
+          <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => {
+              const imageUrl = field.value || "/add_box_large.svg";
+              return (
+                <FormItem className="flex flex-col mt-4 mb-7">
+                  <FormLabel className="text-lg font-medium">이미지</FormLabel>
+                  <FormControl>
+                    <div
+                      role="button"
+                      className="group relative aspect-square size-[76px] min-w-[76px] cursor-pointer overflow-hidden rounded-md"
+                      onClick={() => {
+                        fileRef.current?.click();
+                      }}
+                    >
+                      <Image
+                        className="size-full object-cover"
+                        src={imageUrl}
+                        unoptimized
+                        alt="Profile"
+                        width={76}
+                        height={76}
+                      />
+                      <div className="absolute inset-0 hidden size-full bg-black/20 group-hover:block" />
+                      <Input
+                        type="file"
+                        className="hidden"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        ref={fileRef}
+                      />
+                    </div>
+                  </FormControl>
+                </FormItem>
+              );
+            }}
+          />
 
           <AlertDialogFooter>
             <AlertDialogCancel className="px-[46px] py-3.5 border rounded-lg border-[#d9d9d9]">
