@@ -21,12 +21,22 @@ const formSchema = z.object({
   title: z.string().min(1),
 });
 
-export function ColumnCreateForm({ dashboardId }: { dashboardId: number }) {
+export function ColumnCreateForm({
+  dashboardId,
+  titles,
+}: {
+  dashboardId: number;
+  titles: string[];
+}) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
+  const title = form.watch("title");
+  const test = titles.includes(title);
+
   async function onSubmit(data: z.infer<typeof formSchema>) {
+    console.log(title);
     const newBody = { title: data.title, dashboardId: Number(dashboardId) };
     const response = await fetch("/api/columns", {
       method: "POST",
@@ -68,7 +78,7 @@ export function ColumnCreateForm({ dashboardId }: { dashboardId: number }) {
             </AlertDialogCancel>
             <AlertDialogAction
               type="submit"
-              disabled={!form.formState.isValid}
+              disabled={!form.formState.isValid || test}
               className="bg-[#5534da] text-white px-[46px] py-3.5 rounded-lg hover:bg-[#4524ca]"
             >
               생성
