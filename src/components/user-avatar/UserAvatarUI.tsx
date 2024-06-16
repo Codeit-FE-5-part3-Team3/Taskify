@@ -41,7 +41,11 @@ export default function UserAvatarUI({ userData }: { userData: any }) {
         </DropdownMenuItem>
         <DropdownMenuItem
           className={cn(" focus:bg-[#f1effd] focus:text-[#5534da]")}
-          onClick={() => signOut({ callbackUrl: "/" })}
+          onClick={() =>
+            signOut({
+              callbackUrl: "https://main--taskify-5-3.netlify.app/login",
+            })
+          }
         >
           로그아웃
         </DropdownMenuItem>
