@@ -47,13 +47,12 @@ const LoginPage = () => {
       redirect: true,
       email: values.email,
       password: values.password,
-      callbackUrl: "/mydashboard",
     });
 
     if (result?.error) {
       setError(result.error);
     } else {
-      router.push("/");
+      router.push("/mydashboard");
     }
   };
 
