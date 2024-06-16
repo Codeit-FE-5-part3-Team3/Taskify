@@ -41,11 +41,7 @@ export default function UserAvatarUI({ userData }: { userData: any }) {
         </DropdownMenuItem>
         <DropdownMenuItem
           className={cn(" focus:bg-[#f1effd] focus:text-[#5534da]")}
-          onClick={() =>
-            signOut({
-              redirect: false,
-            })
-          }
+          onClick={() => signOut({ callbackUrl: "/login" })}
         >
           로그아웃
         </DropdownMenuItem>
