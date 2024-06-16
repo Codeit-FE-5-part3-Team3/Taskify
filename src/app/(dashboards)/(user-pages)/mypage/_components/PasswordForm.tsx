@@ -60,16 +60,18 @@ export function PasswordForm() {
         body: JSON.stringify(body),
       });
 
+      console.log(response);
+
       if (response.status === 200) {
         const msg = "비밀번호 변경이 완료 되었습니다.";
         toast({
           description: msg,
         });
-      } else if (response.status === 400) {
-        const msg = "현재 비밀번호가 일치하지 않습니다.";
+      } else if (`${response.status}`.startsWith("4")) {
+        const { message } = await response.json();
         toast({
           variant: "destructive",
-          description: msg,
+          description: message,
         });
         // console.log(response.body);
       }
