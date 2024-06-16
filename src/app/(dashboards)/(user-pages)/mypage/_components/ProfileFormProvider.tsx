@@ -10,7 +10,9 @@ import { save } from "./save";
 
 const FormSchema = z.object({
   email: z.string().email(),
-  name: z.string(),
+  name: z.string().max(10, {
+    message: "열 자 이하로 작성해주세요.",
+  }),
   profileURL: z.string().url(),
   file: z.any(),
 });
@@ -24,6 +26,7 @@ type Props = PropsWithChildren<{
 export function ProfileFormProvider({ defaultValues, children }: Props) {
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
+    mode: "onChange",
     defaultValues,
   });
 
