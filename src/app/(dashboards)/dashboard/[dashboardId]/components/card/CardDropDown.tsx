@@ -93,6 +93,13 @@ export default function CardDropDown({
       </DropdownMenu>
       <AlertDialog open={isDelOpen} onOpenChange={setIsDelOpen}>
         <AlertDialogContent className="w-fit">
+          <Image
+            src={"/card-delete.jpg"}
+            alt={"uncle-sam"}
+            width={400}
+            height={400}
+            objectFit="contain"
+          />
           카드를 삭제하시겠습니까?
           <AlertDialogFooter>
             <div className="w-full flex gap-2 justify-center">

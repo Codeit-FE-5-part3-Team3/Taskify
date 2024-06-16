@@ -13,7 +13,7 @@ import revalidateMyDashboard from "@/util/revalidateMyDashboard";
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
+import Image from "next/image";
 interface Props {
   dashboardId: number;
 }
@@ -57,6 +57,13 @@ export default function DashboardDeleteButton({ dashboardId }: Props) {
         </button>
       </AlertDialogTrigger>
       <AlertDialogContent className="w-50">
+        <Image
+          src={"/dashboard-delete.jpeg"}
+          alt={"uncle-sam"}
+          width={400}
+          height={400}
+          objectFit="contain"
+        />
         <span className="text-bold text-red-500">
           정말로 대시보드를 삭제하시겠습니까?
         </span>

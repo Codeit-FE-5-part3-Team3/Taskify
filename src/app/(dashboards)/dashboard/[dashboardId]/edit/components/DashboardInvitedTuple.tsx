@@ -11,7 +11,7 @@ import {
   AlertDialogAction,
   AlertDialogFooter,
 } from "@/components/ui/alert-dialog";
-
+import Image from "next/image";
 interface Props {
   email: string;
   invitationId: number;
@@ -66,7 +66,14 @@ export default function DashboardInvitedTuple({
           </button>
         </AlertDialogTrigger>
         <AlertDialogContent className="w-50">
-          그냥 얘 오라고 하지 말까요?
+          <Image
+            src={"/cancel-inv.png"}
+            alt={"uncle-sam"}
+            width={400}
+            height={400}
+            objectFit="contain"
+          />
+          그냥 오지 말라고 할까요?
           <AlertDialogFooter className="sm:justify-center">
             <AlertDialogCancel asChild>
               <button className="px-[46px] py-3.5 border rounded-lg border-[#d9d9d9]">

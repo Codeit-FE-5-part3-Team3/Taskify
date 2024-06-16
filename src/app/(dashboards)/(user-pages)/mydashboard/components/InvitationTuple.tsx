@@ -99,10 +99,10 @@ export default function InvitationTuple({
           <AlertDialogContent className="w-50">
             <div className="w-full flex flex-col items-center">
               <Image
-                src={"/uncle-sam.png"}
+                src={"/accept.jpg"}
                 alt={"uncle-sam"}
-                width={200}
-                height={200}
+                width={400}
+                height={400}
                 objectFit="contain"
               />
               초대를 수락하시겠습니까?
