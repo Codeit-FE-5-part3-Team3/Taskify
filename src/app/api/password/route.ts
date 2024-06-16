@@ -12,7 +12,9 @@ export async function PUT(req: Request) {
 
   const body = await req.json();
 
-  return fetch(`${API_URL}/auth/password`, {
+  console.log(body);
+
+  const backendResponse = await fetch(`${API_URL}/auth/password`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${session.accessToken}`,
@@ -20,4 +22,6 @@ export async function PUT(req: Request) {
     },
     body: JSON.stringify(body),
   });
+
+  return NextResponse.json({ status: backendResponse.status });
 }
