@@ -44,7 +44,7 @@ const LoginPage = () => {
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     const result = await signIn("credentials", {
-      redirect: false,
+      redirect: true,
       email: values.email,
       password: values.password,
       callbackUrl: "/mydashboard",
