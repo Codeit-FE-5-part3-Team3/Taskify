@@ -9,12 +9,11 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from '@/components/ui/input';
+import { PasswordInput } from '@/components/ui/password-input';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
-import InputComponent from '@/components/Inputs/InputComponent';
-import PasswordInputComponent from '@/components/Inputs/PasswordInput';
 
 const FormSchema = z.object({
   email: z.string().email({ message: "이메일 형식으로 작성해 주세요." }),
@@ -25,30 +24,25 @@ const FormSchema = z.object({
 
 export type FormValues = z.infer<typeof FormSchema>;
 
-type Props = {
-  defaultValues: FormValues;
-};
-
-const LoginPage = ({ defaultValues }: Props) => {
+const LoginPage = () => {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
-    defaultValues,
+    mode: "onBlur",
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
 
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     const result = await signIn("credentials", {
       redirect: false,
-      email,
-      password,
+      email: values.email,
+      password: values.password,
     });
 
     if (result?.error) {
@@ -69,25 +63,43 @@ const LoginPage = ({ defaultValues }: Props) => {
         <h1 className='mt-[10px] text-lg text-[20px]'>오늘도 만나서 반가워요!</h1>
       </div>
       <Form {...form}>
-         <form onSubmit={handleSubmit} className="flex w-[520px] h-[50px] flex-col gap-6 rounded-lg bg-white px-7 py-8 font-bold text-gray-700 mx-auto">
+         <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-[520px] h-[50px] flex-col gap-6 rounded-lg bg-white px-7 py-8 font-bold text-gray-700 mx-auto">
           <div className="flex gap-4">
             <div className="flex grow flex-col gap-[16px]">
-            <InputComponent
-                label="이메일"
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="이메일을 입력해 주세요"
-              />
-              <PasswordInputComponent
-                label="비밀번호"
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="비밀번호를 입력해 주세요"
-              />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="relative">
+                  <FormLabel className="text-lg">이메일</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="h-12 text-md placeholder:opacity-50 placeholder:font-normal"
+                      placeholder="이메일을 입력해 주세요"
+                      {...field}
+                    />
+                  </FormControl>
+                <FormMessage />
+              </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="relative">
+                  <FormLabel className="text-lg">비밀번호</FormLabel>
+                  <FormControl>
+                    <PasswordInput
+                      className="h-12 text-md placeholder:opacity-50 placeholder:font-normal"
+                      placeholder="비밀번호를 입력해 주세요"
+                      {...field}
+                    />
+                  </FormControl>
+                <FormMessage className="text-red-50" />
+              </FormItem>
+              )}
+            />
             </div>
           </div>
           {error && <p>{error}</p>}
