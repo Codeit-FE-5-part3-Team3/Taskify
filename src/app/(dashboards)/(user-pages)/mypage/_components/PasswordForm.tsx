@@ -62,7 +62,7 @@ export function PasswordForm() {
 
       console.log(response);
 
-      if (response.status === 200) {
+      if (response.status === 204) {
         const msg = "비밀번호 변경이 완료 되었습니다.";
         toast({
           description: msg,
