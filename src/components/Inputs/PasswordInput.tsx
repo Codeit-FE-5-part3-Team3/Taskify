@@ -13,7 +13,7 @@ const PasswordInputComponent = ({ label, type, id, value, placeholder, onChange 
           value={value}
           placeholder={placeholder}
           onChange={onChange}
-          className=" text-md h-12 font-normal placeholder:opacity-50 focus:border-violet-100 focus:border-[1px] focus:border-solid"
+          className="text-md h-12 font-normal placeholder:opacity-50 focus:border-violet-100 focus:border-[1px] focus:border-solid"
         />
       </FormControl>
     </FormItem>
