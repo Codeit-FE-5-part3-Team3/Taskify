@@ -42,7 +42,7 @@ export default async function InvitedList({
           {invitations.length > 0 && (
             <>
               <span>
-                {memberPage} / {maxPage}
+                {invitationPage} / {maxPage}
               </span>
               <div className="flex">
                 <PaginationButtonBar
