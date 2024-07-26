@@ -6,6 +6,7 @@ import { NextResponse } from "next/server";
 
 const accessTokenRequiredPages = ["/mydashboard", "/mypage", "/dashboard"];
 const accessTokenNotRequiredPages = ["/", "/login", "/signup"];
+const buildtest = '아아아아아';
 
 export default withAuth(
   async function middleware(req) {
