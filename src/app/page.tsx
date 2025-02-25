@@ -2,6 +2,7 @@ const MainPage = () => {
   return (
     <>
       <main className='flex flex-center flex-col gap-24 bg-gray-900'>
+        <p>
       ----------------이미본것들------------<br>
 keeping-components-pure<br>
 <br>
@@ -16,6 +17,7 @@ synchronizing-with-effects<br>
 ---/reference/<br>
 react/memo<br>
 react/useEffect<br>
+  </p>
       </main>
     </>
   );
