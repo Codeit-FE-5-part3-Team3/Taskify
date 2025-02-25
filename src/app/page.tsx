@@ -1,20 +1,21 @@
-import Header from '@/components/landing/MainHeader';
-import MainSection from '@/components/landing/MainSection';
-import FirstPoint from '@/components/landing/FirstPoint';
-import SecondPoint from '@/components/landing/SecondPoint';
-import SettingSection from '@/components/landing/SettingSection';
-import MainFooter from '@/components/landing/MainFooter';
-
 const MainPage = () => {
   return (
     <>
       <main className='flex flex-center flex-col gap-24 bg-gray-900'>
-        <Header />
-        <MainSection />
-        <FirstPoint />
-        <SecondPoint />
-        <SettingSection />
-        <MainFooter />
+      ----------------이미본것들------------<br>
+keeping-components-pure<br>
+<br>
+----------------봐야할것들-------------<br>
+----/learn/<br>
+describing-the-ui<br>
+responding-to-events<br>
+understanding-your-ui-as-a-tree<br>
+render-and-commit<br>
+synchronizing-with-effects<br>
+<br>
+---/reference/<br>
+react/memo<br>
+react/useEffect<br>
       </main>
     </>
   );
